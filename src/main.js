@@ -4,6 +4,7 @@ import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import Element from 'element-ui'
 import './styles/element-variables.scss'
 import '@/styles/index.scss' // global css
+import axios from 'axios'
 
 import App from './App'
 import store from './store'
@@ -24,7 +25,7 @@ Vue.use(Element, {
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
-
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 new Vue({

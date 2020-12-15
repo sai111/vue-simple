@@ -19,20 +19,34 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true }
+      }
+    ]
+  },
+  piecesRouter,
+  {
+    path: '/dataProgress',
+    component: () => import('@/views/data-progress/index'),
+    name: 'DataProgress',
+    meta: { title: '数据处理', icon: '' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/data-progress/index'),
+        name: 'DataProgress',
+        meta: { title: '数组1', icon: '' },
+        children: []
       }
     ]
   }
 ]
 
 export const asyncRoutes = [
-  piecesRouter,
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  piecesRouter
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

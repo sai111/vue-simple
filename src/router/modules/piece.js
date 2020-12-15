@@ -1,19 +1,20 @@
-import Layout from '@/layout'
 const piecesRouter = {
-  path: '/viewPieces',
-  component: Layout,
-  redirect: 'noRedirect',
-  name: 'Pieces',
-  meta: {
-    title: '组件收集',
-    icon: ''
-  },
+  path: '/viewPiece',
+  component: () => import('@/views/view-piece/index'),
+  name: 'ViewPiece',
+  meta: { title: '效果集合', icon: '' },
   children: [
     // {
-    //   path: 'keyboard',
-    //   component: () => import('@/views/charts/keyboard'),
-    //   name: 'KeyboardChart',
-    //   meta: { title: 'Keyboard Chart', noCache: true }
+    //   path: '',
+    //   component: () => import('@/views/view-piece/index'),
+    //   name: 'ViewPiece',
+    //   meta: { title: '1效果集合', icon: '' },
+    // }
+    // ,{
+    //   path: 'treeXmind',
+    //   component: () => import('@/packages/svg/treeXmind/entry'),
+    //   name: 'Entry',
+    //   meta: { title: '1效果集合', icon: '' },
     // }
   ]
 }

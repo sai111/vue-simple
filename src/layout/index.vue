@@ -1,16 +1,23 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    layout
+    <sidebar class="sidebar-container" />
+    <div class="main-container">
+      <app-main />
+    </div>
   </div>
 </template>
 <script>
-import ResizeMixin from './mixin/ResizeHandler'
+import Sidebar from './components/Sidebar/index.vue'
+import AppMain from './components/AppMain.vue'
+
 import { mapState } from 'vuex'
 
 export default {
   name: 'Layout',
-  components: {},
-  mixins: [ResizeMixin],
+  components: {
+    Sidebar,
+    AppMain
+  },
   computed: {
     ...mapState({
       device: state => state.app.device
@@ -28,7 +35,6 @@ export default {
 <style lang="scss" scoped>
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";
-
   .app-wrapper {
     @include clearfix;
     position: relative;

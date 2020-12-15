@@ -10,7 +10,7 @@ function resolve(dir) {
 // For example, Mac: sudo npm run
 // You can change the port by the following method:
 // port = 9527 npm run dev OR npm run dev --port = 9527
-const port = process.env.port || process.env.npm_config_port || 8080 // dev port
+const port = process.env.port || process.env.npm_config_port || 3030 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -32,7 +32,7 @@ module.exports = {
     // 设置请求代理
     proxy: {
       '/api': {
-        target: `http://116.62.114.170:${port}`,
+        target: 'http://116.62.114.170:3000',
         ws: true, // 是否启用websockets
         changOrigin: true, // 开启代理：在本地会创建一个虚拟服务端，然后发送请求的数据，并同时接收请求的数据，这样服务端和服务端进行数据的交互就不会有跨域问题
         pathRewrite: {
