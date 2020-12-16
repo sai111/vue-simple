@@ -5,8 +5,6 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
-
-/* Router Modules */
 import piecesRouter from './modules/piece'
 
 export const constantRoutes = [
@@ -39,10 +37,6 @@ export const constantRoutes = [
       }
     ]
   }
-]
-
-export const asyncRoutes = [
-  piecesRouter
 ]
 
 const createRouter = () => new Router({

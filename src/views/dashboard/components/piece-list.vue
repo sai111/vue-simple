@@ -81,22 +81,9 @@ export default {
       this.$refs['piece-add-dialog'].activateForm(`${flag ? '创建' : '修改'}一个作品`, addForm, this.pieceType)
     },
     openPiece(item) {
-      if (item && Object.keys(item).length > 0) {
-        this.$router.options.routes[1].children.push({
-          path: item.en,
-          name: 'Entry',
-          component: () => require(`@/packages/${item.category_code}/${item.en}/entry`),
-          meta: { title: item.name, icon: '' }
-        })
-        this.$router.addRoutes(this.$router.options.routes)
-        // this.$nextTick(() => {
-        //   // this.$router.push({ path: '/viewPiece/' + item.en, name: 'Entry' })
-        // })
-      }
-      this.$router.push({ path: '/viewPiece', query: { en: item.en }})
+      this.$router.push({ path: '/viewPiece/' + item.en })
     },
     deletePiece(item) {
-      console.log(item, ';item----000')
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

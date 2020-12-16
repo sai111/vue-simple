@@ -9,7 +9,7 @@
     >
       <sidebar-item
         v-for="route in menus"
-        :key="route.path"
+        :key="'menu' + route.path"
         :item="route"
         :base-path="route.path"
       />
@@ -45,6 +45,7 @@ export default {
     variables() {
       return variables
     }
-  }
+  },
+  mounted() {}
 }
 </script>

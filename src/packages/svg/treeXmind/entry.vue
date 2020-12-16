@@ -7,7 +7,7 @@
 <script>
 import treeXmind from './index.vue'
 export default {
-  name: 'Entry',
+  name: 'TreeXmindEntry',
   components: { treeXmind },
   data() {
     return {}
