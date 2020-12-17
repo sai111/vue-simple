@@ -1,6 +1,7 @@
 <!-- treeXmind文档 -->
 # treeXmind文档 
 
+https://zhuanlan.zhihu.com/p/105467597
 Balanced Binary Tree
 
 ### 1. 绘制模版：

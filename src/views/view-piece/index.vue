@@ -57,8 +57,7 @@ export default {
       pieceDialog: false,
       pieceTip: '',
       drawerFlag: false,
-      drawerTitle: '',
-      isCom: null
+      drawerTitle: ''
     }
   },
   mounted() {},

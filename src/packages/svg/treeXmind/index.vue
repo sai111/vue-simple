@@ -1,6 +1,17 @@
 <template>
   <div class="treeXmind">
-    <svg>
+    <svg
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      preserveAspectRetio="xMidYMid meet"
+      width="100%"
+      height="100%"
+      x="0%"
+      y="0%"
+      :view-box.camel="viewBox"
+    >
+      <g />
       <!-- 中心主题 -->
       <!-- 分支主题 -->
       <!-- 子主题 -->
@@ -15,11 +26,30 @@ export default {
   props: {},
   data() {
     return {
-      tmpData: [],
-      treeData: []
+      treeData: [],
+      width: 1000,
+      height: 600,
+      config: {
+        thirdCollapse: false, // 第三层是否折叠
+        imgs: [],
+        defaultImg: '',
+        editImg: '',
+        branchWidth: 200,
+        branchHeight: 50
+      }
     }
   },
-  computed: {},
+  computed: {
+    viewBox() {
+      return `0 0 ${this.width} ${this.height}`
+    },
+    cx() {
+      return this.width / 2
+    },
+    cy() {
+      return this.height / 2
+    }
+  },
   watch: {},
   mounted() {
     this.getData()
@@ -29,15 +59,18 @@ export default {
   methods: {
     getData() {
       getTree().then((res) => {
-        console.log(res, 'res---->>>')
-        this.tmpData = res.data.list
+        const data = res.data
+        if (data && Object.keys(data).length > 0 && data.children && data.children.length > 0) {
+          data.branch = data.children.length
+          for (const i of data.children) {
+            this.handleLoop(i)
+          }
+          // data.maxChild = Math.max.apply(null, data.children.map(function(o) { return o.total }))
+          // data.minChild = Math.min.apply(null, data.children.map(function(o) { return o.total }))
+          console.log('🚀 ~ file: entry.vue ~ line 95 ~ init ~ data', data)
+        }
+        this.tmpData = data
       })
-    },
-    init(data) {
-      for (const i of data) {
-        this.handleLoop(i)
-      }
-      console.log('🚀 ~ file: entry.vue ~ line 95 ~ init ~ data', data)
     },
     initData() {
       this.treeData.splice(0, this.treeData.length, ...this.tmpData)
@@ -66,17 +99,14 @@ export default {
     handleLoop(o, len1 = 0, len2 = 0) {
       if (Array.isArray(o)) return false
       if (typeof o === 'object' && o && Object.keys(o).length && o.children) {
-        // o.total += Math.max(1, j.children.length)
         o.total = o.children.length
         for (let i = 0; i < o.children.length; i++) {
           const j = o.children[i]
           j.len = len2
-          // o.total += Math.max(1, j.total)
-          j.total = 0
+          len2 += Math.max(1, j.children ? j.children.length : 0)
           if (j.children) {
-            len2 += Math.max(1, j.children.length)
-            j.total += Math.max(0, j.children.length)
             len1 += j.children.length
+            o.total += j.children.length
             for (const k of j.children) {
               k.len = len1
               this.handleLoop(k, len1, len2)
