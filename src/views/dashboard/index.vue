@@ -4,6 +4,7 @@
       <aside-button
         :home-label="homeLabel"
         :category-list="categoryList"
+        @addCategory="addCategory"
         @editCate="editCate"
         @categoryClick="categoryClick"
       />

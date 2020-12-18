@@ -4,6 +4,7 @@
       <el-button
         plain
         icon="el-icon-plus"
+        @click="$emit('addCategory')"
       >
         {{ homeLabel }}
       </el-button>

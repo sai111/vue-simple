@@ -4,6 +4,7 @@ import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import Element from 'element-ui'
 import './styles/element-variables.scss'
 import '@/styles/index.scss' // global css
+import 'prismjs/themes/prism.css'
 import axios from 'axios'
 
 import App from './App'

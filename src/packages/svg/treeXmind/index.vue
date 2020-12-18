@@ -1,5 +1,10 @@
 <template>
   <div class="treeXmind">
+    <div>
+      <a href="http://sese808.com" target="_blank" rel="noopener noreferrer">
+        测试按钮
+      </a>
+    </div>
     <svg
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +62,13 @@ export default {
     // this.init(this.tmpData)
   },
   methods: {
+    clickUrl() {
+      this.$nextTick(() => {
+        const url = 'http://sese808.com'
+        window.open(url, '_blank')
+        // tmp.location.href = url
+      })
+    },
     getData() {
       getTree().then((res) => {
         const data = res.data
