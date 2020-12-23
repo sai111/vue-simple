@@ -1,11 +1,11 @@
 const Mock = require('mockjs')
 const treeList = {
-  name: '中心主题' + Mock.mock('@ctitle(5,20)'),
-  title: null,
+  title: '中心主题' + Mock.mock('@ctitle(5,20)'),
+  value: null,
   children: []
 }
-const count = Mock.mock('@natural(1,5)')
-// const count = 2
+// const count = Mock.mock('@natural(1,5)')
+const count = 2
 for (let i = 0; i < count; i++) {
   treeList.children.push(Mock.mock({
     id: '@id',

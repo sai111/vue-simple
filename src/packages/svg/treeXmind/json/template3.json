@@ -1,0 +1,353 @@
+{
+  "code": 200,
+  "message": null,
+  "data": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "id": "1341626994240385026",
+                "parentId": 1341584505219444738,
+                "value": "54.223.124.86",
+                "title": null,
+                "webType": "ip_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341626994282328066",
+                "parentId": 1341584505219444738,
+                "value": "http://45.203.117.252:9191",
+                "title": "滚球前面进的球算吗",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341626994320076801",
+                "parentId": 1341584505219444738,
+                "value": "http://45.203.117.231:9711",
+                "title": "德州棋牌游戏名字",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              }
+            ],
+            "id": "1341584505219444738",
+            "parentId": 1341584505164918786,
+            "value": null,
+            "title": "渠道推广",
+            "webType": "second_lvl",
+            "edit": true,
+            "sum": 3,
+            "direction": null
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "id": "1341627578074918913",
+                "parentId": 1341584505278164993,
+                "value": "54.223.124.86",
+                "title": null,
+                "webType": "ip_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627578133639170",
+                "parentId": 1341584505278164993,
+                "value": "http://45.203.117.252:9191",
+                "title": "滚球前面进的球算吗",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627578179776513",
+                "parentId": 1341584505278164993,
+                "value": "http://45.203.117.231:9711",
+                "title": "德州棋牌游戏名字",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627578221719554",
+                "parentId": 1341584505278164993,
+                "value": "http://45.203.117.234:9711",
+                "title": "棋牌评价",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627578284634114",
+                "parentId": 1341584505278164993,
+                "value": "http://blizzard-home-site-prod-dchbqhpx2h.cn-north-1.eb.amazonaws.com.cn",
+                "title": "暴雪娱乐",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627578334965761",
+                "parentId": 1341584505278164993,
+                "value": "http://cn.blizzard.com",
+                "title": "暴雪娱乐",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627578431434753",
+                "parentId": 1341584505278164993,
+                "value": "http://45.203.117.210:9711",
+                "title": "开心飞鹰线上投注",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              }
+            ],
+            "id": "1341584505278164993",
+            "parentId": 1341584505164918786,
+            "value": null,
+            "title": "销售代理服务商",
+            "webType": "second_lvl",
+            "edit": true,
+            "sum": 7,
+            "direction": null
+          }
+        ],
+        "id": "1341584505164918786",
+        "parentId": 0,
+        "value": null,
+        "title": "推广运营服务商",
+        "webType": "promotion",
+        "edit": false,
+        "sum": 10,
+        "direction": "right"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "id": "1341628916537323522",
+            "parentId": 1341584505324302337,
+            "value": "54.223.124.86",
+            "title": null,
+            "webType": "ip_code",
+            "edit": false,
+            "sum": 1,
+            "direction": null
+          },
+          {
+            "children": [],
+            "id": "1341628916696707074",
+            "parentId": 1341584505324302337,
+            "value": "http://45.203.117.252:9191",
+            "title": "滚球前面进的球算吗",
+            "webType": "website_code",
+            "edit": false,
+            "sum": 1,
+            "direction": null
+          },
+          {
+            "children": [],
+            "id": "1341628916856090626",
+            "parentId": 1341584505324302337,
+            "value": "http://45.203.117.231:9711",
+            "title": "德州棋牌游戏名字",
+            "webType": "website_code",
+            "edit": false,
+            "sum": 1,
+            "direction": null
+          }
+        ],
+        "id": "1341584505324302337",
+        "parentId": 0,
+        "value": null,
+        "title": "广告提供服务商",
+        "webType": "advertise",
+        "edit": true,
+        "sum": 3,
+        "direction": "right"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "id": "1341627428778668034",
+                "parentId": 1341584505429159937,
+                "value": "http://45.203.117.252:9191",
+                "title": "滚球前面进的球算吗",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627428870942721",
+                "parentId": 1341584505429159937,
+                "value": "http://45.203.117.231:9711",
+                "title": "德州棋牌游戏名字",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              }
+            ],
+            "id": "1341584505429159937",
+            "parentId": 1341584505378828290,
+            "value": null,
+            "title": "云服务",
+            "webType": "second_lvl",
+            "edit": true,
+            "sum": 2,
+            "direction": null
+          },
+          {
+            "children": [],
+            "id": "1341584505508851714",
+            "parentId": 1341584505378828290,
+            "value": null,
+            "title": "域名服务",
+            "webType": "second_lvl",
+            "edit": true,
+            "sum": 1,
+            "direction": null
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "id": "1341627332443893761",
+                "parentId": 1341584505580154881,
+                "value": "http://45.203.117.252:9191",
+                "title": "滚球前面进的球算吗",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627332502614018",
+                "parentId": 1341584505580154881,
+                "value": "http://45.203.117.231:9711",
+                "title": "德州棋牌游戏名字",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627332548751362",
+                "parentId": 1341584505580154881,
+                "value": "http://45.203.117.234:9711",
+                "title": "棋牌评价",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627332590694402",
+                "parentId": 1341584505580154881,
+                "value": "http://blizzard-home-site-prod-dchbqhpx2h.cn-north-1.eb.amazonaws.com.cn",
+                "title": "暴雪娱乐",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627332645220353",
+                "parentId": 1341584505580154881,
+                "value": "http://cn.blizzard.com",
+                "title": "暴雪娱乐",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              },
+              {
+                "children": [],
+                "id": "1341627332695552002",
+                "parentId": 1341584505580154881,
+                "value": "http://45.203.117.210:9711",
+                "title": "开心飞鹰线上投注",
+                "webType": "website_code",
+                "edit": false,
+                "sum": 1,
+                "direction": null
+              }
+            ],
+            "id": "1341584505580154881",
+            "parentId": 1341584505378828290,
+            "value": null,
+            "title": "移动支付服务",
+            "webType": "second_lvl",
+            "edit": true,
+            "sum": 6,
+            "direction": null
+          },
+          {
+            "children": [],
+            "id": "1341584505634680834",
+            "parentId": 1341584505378828290,
+            "value": null,
+            "title": "APP外包开发",
+            "webType": "second_lvl",
+            "edit": true,
+            "sum": 1,
+            "direction": null
+          }
+        ],
+        "id": "1341584505378828290",
+        "parentId": 0,
+        "value": null,
+        "title": "技术服务服务商",
+        "webType": "technical",
+        "edit": false,
+        "sum": 10,
+        "direction": "left"
+      }
+    ],
+    "id": "1341584504800014337",
+    "parentId": null,
+    "value": "54.223.124.86",
+    "title": "暴雪娱乐",
+    "webType": "gambling",
+    "edit": true,
+    "sum": null,
+    "direction": null
+  }
+}
