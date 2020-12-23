@@ -62,7 +62,6 @@ export default {
   watch: {},
   mounted() {
     this.getJson()
-    console.log(this.$refs, 'diy-wrapper')
     // this.getData()
   },
   methods: {
@@ -93,19 +92,15 @@ export default {
     },
     formatMore(data, direction, zoom = 2, webType) {
       if (data && data.children && data.children.length > 0) {
-        // if (data.children.length > 5) {
-        //   data.children[5].isMore = true
-        // }
-        if (data.children.length > 6) {
+        if (data.children.length >= 6) {
+          data.children[0].isMore = true
           data.children = data.children.splice(0, 6)
-          // data.children[data.children.length - 1].isMore = true
         }
         for (var i = 0; i < data.children.length; i++) {
           const v = data.children[i]
           v.directionFlag = direction
           v.zoom = zoom
           v.webTypeOnly = webType
-          // v.isMore = i > 4
           if (v.children && v.children.length > 0) {
             v.webTypeOnly = v.webType
             this.formatMore(v, direction, ++zoom, v.webType)
@@ -121,11 +116,11 @@ export default {
       const img = node.level < 4 ? this.imgs[node.data.webType] || this.imgs[node.data.webTypeOnly] || (node.level > 0 ? this.imgs[node.parent.data.webType] : '') : ''
       const valueLink = node.data.value ? (node.data.value).includes('http') ? node.data.value : 'http://' + node.data.value : ''
       const image = node.data.isCenter ? '' : this.isEdit && node.data.edit ? this.edit : img
-      const titleText = node.data.title && node.data.title.length > 12 ? node.data.title.slice(0, 12) + '...' : node.data.title
-      const valueText = node.data.value && node.data.value.length > 12 ? node.data.value.slice(0, 12) + '...' : node.data.value
+      const titleText = node.data.title ? this.byLength(node.data.title, 24) : node.data.title
+      const valueText = node.data.value ? this.byLength(node.data.value, 24) : node.data.value
       // dom
       const valueDom = <a href={valueLink} target='_blank' rel='noopener noreferrer'>{ valueText }</a>
-      const centerValueDom = <div class='diy-con-content-edit-box'>{ node.data.title ? '编辑' : '添加' }网站信息</div>
+      const centerValueDom = <div class='diy-con-content-edit-box' onClick={() => this.clickEdit(node.data)}>{ node.data.title ? '编辑' : '添加' }网站信息</div>
       const imageDom = <div class='diy-con-name-image' onClick={() => this.clickImage(node.data, node.parent.data)}><img src={image} /></div>
       const moreDom = <div class='diy-con-name-more' onClick={() => this.clickMore(node.data, node.parent.data)}>更多</div>
 
@@ -141,7 +136,7 @@ export default {
       }
       // 结果
       return (
-        <div ref='diy-wrapper' class={cls}>
+        <div class={cls}>
           <div class='diy-con-name'>
             { node.data.isMore ? moreDom : '' }
             { image && !node.data.isMore ? imageDom : null }
@@ -153,8 +148,28 @@ export default {
         </div>
       )
     },
+    byLength(str, L) {
+      let result = ''
+      const len = str.length // 字符串长度
+      const chrlen = str.replace(/[^\x00-\xff]/g, '**').length // 字节长度
+      if (chrlen <= L) { return str }
+      for (var i = 0, j = 0; i < len; i++) {
+        var chr = str.charAt(i)
+        if (/[\x00-\xff]/.test(chr)) {
+          j++ // ascii码为0-255，一个字符就是一个字节的长度
+        } else {
+          j += 2 // ascii码为0-255以外，一个字符就是两个字节的长度
+        }
+        if (j <= L) { // 当加上当前字符以后，如果总字节长度小于等于L，则将当前字符真实的+在result后
+          result += chr
+        } else { // 反之则说明result已经是不拆分字符的情况下最接近L的值了，直接返回
+          return result + '...'
+        }
+      }
+    },
     clickMore(item, parent) {},
-    clickImage(item, parent) {}
+    clickImage(item, parent) {},
+    clickEdit(item) {}
   }
 }
 </script>
@@ -178,6 +193,9 @@ export default {
       }
     }
     .org-chart-node-children {
+      .only-both-tree-node {
+        justify-content: center;
+      }
       .expanded {
         background: transparent!important;
         width: 0!important;
@@ -207,6 +225,10 @@ export default {
       }
       .diy-wrapper-direction-right {
         text-align: left;
+      }
+      .diy-con-name-more {
+        color:#31c05c!important;
+        cursor: pointer;
       }
       .diy-wrapper-center {
         width: 110px;
