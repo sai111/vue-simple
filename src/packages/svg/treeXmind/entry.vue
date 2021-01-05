@@ -18,28 +18,12 @@
         编辑
       </span>
     </div>
-    <vue-okr-tree
-      v-if="chainData&&Object.keys(chainData).length>0"
-      :data="treeData"
-      :left-data="leftData"
-      only-both-tree
-      direction="horizontal"
-      show-collapsable
-      node-key="id"
-      default-expand-all
-      label-class-name="diy-con-label"
-      label-width="90"
-      :props="defaultProps"
-      :render-content="renderContent"
-    />
   </div>
 </template>
 <script>
-import { VueOkrTree } from 'vue-okr-tree'
-import 'vue-okr-tree/dist/vue-okr-tree.css'
 export default {
   name: 'TreeXmindEntry',
-  components: { VueOkrTree },
+  components: {},
   data() {
     return {
       loading: false,
