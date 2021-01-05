@@ -5,10 +5,16 @@
   >
     treeXmind组件
     <div class="treexmind-edit">
-      <span v-if="isEdit">
+      <span
+        v-if="isEdit"
+        @click="clickSave"
+      >
         完成
       </span>
-      <span v-else>
+      <span
+        v-else
+        @click="openEdit"
+      >
         编辑
       </span>
     </div>
@@ -22,6 +28,7 @@
       node-key="id"
       default-expand-all
       label-class-name="diy-con-label"
+      label-width="90"
       :props="defaultProps"
       :render-content="renderContent"
     />
@@ -62,12 +69,11 @@ export default {
   watch: {},
   mounted() {
     this.getJson()
-    // this.getData()
   },
   methods: {
     getJson() {
       this.loading = true
-      const res = require('./json/template3.json')
+      const res = require('./json/chain.json')
       if (res.data && Object.keys(res.data).length > 0) {
         const data = res.data
         const newObj = Object.assign({}, res.data)
@@ -87,7 +93,6 @@ export default {
         }
         this.loading = false
         this.chainData = data
-        console.log(this.treeData, '1111', this.leftData, 'data', this.chainData)
       }
     },
     formatMore(data, direction, zoom = 2, webType) {
@@ -115,11 +120,22 @@ export default {
       // 判断
       const img = node.level < 4 ? this.imgs[node.data.webType] || this.imgs[node.data.webTypeOnly] || (node.level > 0 ? this.imgs[node.parent.data.webType] : '') : ''
       const valueLink = node.data.value ? (node.data.value).includes('http') ? node.data.value : 'http://' + node.data.value : ''
-      const image = node.data.isCenter ? '' : this.isEdit && node.data.edit ? this.edit : img
-      const titleText = node.data.title ? this.byLength(node.data.title, 24) : node.data.title
-      const valueText = node.data.value ? this.byLength(node.data.value, 24) : node.data.value
+      const image = node.data.isCenter ? '' : this.isEdit && node.data.edit ? this.editImg : img
+      const titleText = node.data.title ? this.byLength(node.data.title, 13) : node.data.title
+      const valueText = node.data.value ? this.byLength(node.data.value, 13) : node.data.value
       // dom
-      const valueDom = <a href={valueLink} target='_blank' rel='noopener noreferrer'>{ valueText }</a>
+      let titleDom
+      if (this.getChartLen(node.data.title) > 12) {
+        titleDom = <div class='diy-con-content-title'><el-tooltip content={node.data.title} placement='top'><div>{ titleText }</div></el-tooltip></div>
+      } else {
+        titleDom = <div class='diy-con-content-title'>{ titleText }</div>
+      }
+      let valueDom
+      if (this.getChartLen(node.data.value) > 12) {
+        valueDom = <a href={valueLink} target='_blank' rel='noopener noreferrer'><el-tooltip content={node.data.value} placement='top'><div>{ valueText }</div></el-tooltip></a>
+      } else {
+        valueDom = <a href={valueLink} target='_blank' rel='noopener noreferrer'>{ valueText }</a>
+      }
       const centerValueDom = <div class='diy-con-content-edit-box' onClick={() => this.clickEdit(node.data)}>{ node.data.title ? '编辑' : '添加' }网站信息</div>
       const imageDom = <div class='diy-con-name-image' onClick={() => this.clickImage(node.data, node.parent.data)}><img src={image} /></div>
       const moreDom = <div class='diy-con-name-more' onClick={() => this.clickMore(node.data, node.parent.data)}>更多</div>
@@ -140,7 +156,7 @@ export default {
           <div class='diy-con-name'>
             { node.data.isMore ? moreDom : '' }
             { image && !node.data.isMore ? imageDom : null }
-            { node.data.title && !node.data.isMore ? titleText : null }
+            { node.data.title && !node.data.isMore ? titleDom : null }
           </div>
           <div class='diy-con-content'>
             { node.data.isCenter && this.isEdit ? centerValueDom : node.data.value && !node.data.isMore ? valueDom : null }
@@ -148,6 +164,7 @@ export default {
         </div>
       )
     },
+    // https://blog.csdn.net/weixin_38747509/article/details/80534849?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
     byLength(str, L) {
       let result = ''
       const len = str.length // 字符串长度
@@ -167,9 +184,29 @@ export default {
         }
       }
     },
+    getChartLen(str) {
+      if (!str) return ''
+      let count = 0
+      let chartCode = -1
+      for (let i = 0; i < str.length; i++) {
+        chartCode = str.charCodeAt(i)
+        if (chartCode >= 0 && chartCode <= 128) {
+          count++
+        } else {
+          count += 2
+        }
+      }
+      return count
+    },
     clickMore(item, parent) {},
     clickImage(item, parent) {},
-    clickEdit(item) {}
+    clickEdit(item) {},
+    clickSave() {
+      this.isEdit = false
+    },
+    openEdit() {
+      this.isEdit = true
+    }
   }
 }
 </script>
@@ -219,6 +256,7 @@ export default {
       }
       .diy-con-label {
         padding: 0!important;
+        overflow: hidden;
       }
       .diy-wrapper-direction-left {
         text-align: right;
@@ -229,6 +267,16 @@ export default {
       .diy-con-name-more {
         color:#31c05c!important;
         cursor: pointer;
+      }
+      .diy-wrapper-custom {
+        overflow: hidden;
+        width: 100%;
+        .diy-con-name {
+          width: 100%;
+          word-break: normal;
+          // text-overflow: ellipsis;
+          // white-space: nowrap
+        }
       }
       .diy-wrapper-center {
         width: 110px;
@@ -243,6 +291,9 @@ export default {
       }
     }
   }
-
+  .treexmind-edit {
+    color: #fff;
+    cursor: pointer;
+  }
 }
 </style>
