@@ -1,10 +1,22 @@
 <template>
-  <div class="treeXmind">
-    tree
+  <div ref="tree-xmind" class="treeXmind">
+    <svg
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      preserveAspectRetio="xMidYMid meet"
+      width="100%"
+      height="100%"
+      x="0%"
+      y="0%"
+      :viewBox="viewBox"
+    >
+      1122
+    </svg>
   </div>
 </template>
 <script>
-
+import ResizeObserver from 'resize-observer-polyfill'
 export default {
   name: 'TreeXmind',
   components: {},
@@ -50,8 +62,27 @@ export default {
     }
   },
   watch: {},
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.initObserver()
+  },
+  beforeDestroy() {
+    this.resizeObserver = null
+  },
+  methods: {
+    initObserver() {
+      this.resizeObserver = new ResizeObserver(this.resize)
+      if (this.$refs['tree-xmind']) {
+        this.resizeObserver.observe(this.$refs['tree-xmind'])
+      }
+      this.resize()
+    },
+    resize() {
+      if (this.$refs['tree-xmind']) {
+        const { width } = this.$refs['tree-xmind'].getBoundingClientRect()
+        this.width = width
+      }
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

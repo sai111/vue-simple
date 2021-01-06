@@ -18,12 +18,14 @@
         编辑
       </span>
     </div>
+    <tree-xmind />
   </div>
 </template>
 <script>
+import TreeXmind from './index.vue'
 export default {
   name: 'TreeXmindEntry',
-  components: {},
+  components: { TreeXmind },
   data() {
     return {
       loading: false,
@@ -196,7 +198,7 @@ export default {
 </script>
 <style lang="scss">
 .treeXmind-entry {
-  background: #202536;
+  // background: #202536;
   width: 100%;
   height: 100%;
   margin: 0 auto;
