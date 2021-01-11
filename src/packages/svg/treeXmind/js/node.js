@@ -28,6 +28,7 @@ export default class Node {
     this.parent = null
     this.expanded = false
     this.leftExpanded = false
+    this.direction = 'right'
     for (const key in options) {
       // if (options.hasOwnProperty(key)) {
       //   this[key] = options[key]
@@ -37,10 +38,16 @@ export default class Node {
     this.level = 0
     this.childNodes = []
     this.leftChildNodes = []
+    this.sum = 0
+    this.len = 0
     if (this.parent) {
       this.level = this.parent.level + 1
     }
-
+    if (this.data) {
+      this.sum = this.data.sum
+      this.len = this.data.len
+      this.direction = this.data.directionFlag
+    }
     const store = this.store
     if (!store) {
       throw new Error('[Node]store is required!')

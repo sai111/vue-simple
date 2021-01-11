@@ -18,7 +18,17 @@
         编辑
       </span>
     </div>
-    <tree-xmind />
+    <tree-xmind
+      v-if="chainData&&Object.keys(chainData).length>0"
+      :data="treeData"
+      :left-data="leftData"
+      :props="defaultProps"
+      node-key="id"
+      only-both-tree
+      direction="horizontal"
+      :label-width="labelWidth"
+      :label-height="labelHeight"
+    />
   </div>
 </template>
 <script>
@@ -33,6 +43,8 @@ export default {
       chainData: null,
       treeData: [],
       leftData: [],
+      labelWidth: 150,
+      labelHeight: 40,
       defaultProps: {
         label: 'title',
         children: 'children'
@@ -68,20 +80,25 @@ export default {
         newObj.isMore = false
         if (newObj.children) delete newObj.children
         if (data && data.children && data.children.length > 0) {
+          const leftArr = data.children.filter((v) => v.direction === 'left')
+          const rightArr = data.children.filter((v) => v.direction === 'right')
           this.leftData = [this.formatMore({
             ...newObj,
-            children: data.children.filter((v) => v.direction === 'left')
+            children: leftArr,
+            leftTotal: leftArr.reduce((p, c) => p + (c.sum || 0), 0) + leftArr.length
           }, 'left')]
           this.treeData = [this.formatMore({
             ...newObj,
-            children: data.children.filter((v) => v.direction === 'right')
+            children: rightArr,
+            rightTotal: rightArr.reduce((p, c) => p + (c.sum || 0), 0) + rightArr.length
           }, 'right')]
         }
+        console.log(this.leftData, 'this.leftData', this.treeData)
         this.loading = false
         this.chainData = data
       }
     },
-    formatMore(data, direction, zoom = 2, webType) {
+    formatMore(data, direction, zoom = 2, webType, len2 = 0) {
       if (data && data.children && data.children.length > 0) {
         if (data.children.length >= 6) {
           data.children[0].isMore = true
@@ -89,6 +106,8 @@ export default {
         }
         for (var i = 0; i < data.children.length; i++) {
           const v = data.children[i]
+          v.len = len2 + v.sum
+          len2 += Math.max(1, v.children ? v.children.length : 0)
           v.directionFlag = direction
           v.zoom = zoom
           v.webTypeOnly = webType

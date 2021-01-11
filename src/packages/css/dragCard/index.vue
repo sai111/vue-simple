@@ -14,6 +14,9 @@
           boderEffect: hasBorder,
         }"
         :style="formatCardStyle(index, imgList.length)"
+        @mousedown="mousedownStart"
+        @mousemove="mouseMove"
+        @mouseup="(e, index) => mouseUp(e, index, imgList.length)"
       >
         <template v-if="slotShow">
           <slot :name="(index+1) + 'Card'" />
@@ -96,13 +99,21 @@ export default {
   },
   data() {
     return {
-      isAnimating: false
+      left: 0,
+      top: 0,
+      lastOpacity: 0,
+      isAnimating: false,
+      startLeft: 0,
+      startTop: 0,
+      isDrag: false,
+      isThrow: false,
+      needBack: false
     }
   },
   computed: {},
   watch: {},
   mounted() {
-    console.log(this.imgList, 'imgList---++')
+    this.resetAllCard()
   },
   methods: {
     formatCardStyle(index, len) {
@@ -116,6 +127,9 @@ export default {
         result.left = this.leftPad + 'px'
         result.top = this.topPad * index * 3 + 'px'
         result.zIndex = (len + 10) - index
+        if (index === len - 1) {
+          result.opacity = this.lastOpacity
+        }
       } else {
         result.left = 0
         result.top = 0
@@ -124,6 +138,95 @@ export default {
         result.zIndex = len + 10
       }
       return result
+    },
+    resetAllCard() {
+      this.left = 0
+      this.top = 0
+      this.lastOpacity = 0
+    },
+    mousedownStart(e) {
+      if (this.isAnimating) return
+      this.isThrow = false
+      this.isDrag = true
+      this.needBack = false
+      this.startLeft = e.clientX - this.left
+      this.startTop = e.clientY - this.top
+      this.onDragStart()
+    },
+    mouseMove(e) {
+      if (this.isAnimating) return
+      if (this.dragDirection === 'all' || this.dragDirection === 'horizontal') {
+        this.left = e.clientX - this.startLeft
+      }
+      if (this.dragDirection === 'all' || this.dragDirection === 'vertical') {
+        this.top = e.clientY - this.startTop
+      }
+      this.onDragMove({
+        left: this.left,
+        top: this.top,
+        distance: this.getDistance(0, 0, this.left, this.top)
+      })
+    },
+    mouseUp(e, index, len) {
+      console.log(index, len, '1111')
+      const distance = this.getDistance(0, 0, this.left, this.top)
+      this.isDrag = false
+      this.onDragStop({
+        left: this.left,
+        top: this.top,
+        distance: distance
+      })
+      if (this.isAnimating) return
+      if (distance > this.throwTriggerDistance) {
+        this.makeCardThrow()
+      } else {
+        this.makeCardBack()
+      }
+    },
+    // 1. 超任意拖拽方向飞出去 2. 通过计算angle的余弦值再乘以力度得出
+    getDistance(x1, x2, y1, y2) {
+      var _x = Math.abs(x1 - x2)
+      var _y = Math.abs(y1 - y2)
+      return Math.sqrt(_x * _x + _y * _y)
+    },
+    makeCardThrow() {
+      this.isThrow = true
+      this.needBack = false
+      const angle = Math.atan2((this.top - 0), (this.left - 0))
+      this.left = Math.cos(angle) * this.throwDistance
+      this.top = Math.sin(angle) * this.throwDistance
+      this.lastOpacity = 1
+      this.isAnimating = true
+      // this.onThrowStart()
+      setTimeout(() => {
+        this.isThrow = false
+        this.this.isAnimating = false
+        // this.onThrowDone()
+        // this.resetAllCard()
+      }, 400)
+    },
+    makeCardBack() {
+      this.isThrow = false
+      this.needBack = true
+      if (this.needBack) {
+        this.left = 0
+        this.top = 0
+      }
+      this.isAnimating = true
+      setTimeout(() => {
+        this.isAnimating = false
+        this.needBack = true
+      }, 600)
+    },
+    // 事件触发
+    onDragStart() {
+      this.$emit('onDragStart')
+    },
+    onDragMove(obj) {
+      this.$emit('onDragMove', obj)
+    },
+    onDragStop(obj) {
+      this.$emit('onDragStop', obj)
     }
   }
 }
