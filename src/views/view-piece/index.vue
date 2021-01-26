@@ -163,6 +163,7 @@ export default {
     top: 0;
     right: 0;
     display: flex;
+    z-index: 100;
     .piece-tool-icon {
       font-size: 24px;
       padding-right: 5px;
