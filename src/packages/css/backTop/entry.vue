@@ -1,6 +1,6 @@
 <template>
   <div class="backTop-entry">
-    <el-scrollbar class="custom-el-scroll">
+    <el-scrollbar class="custom-el-scroll custom-el-scroll-components">
       <div class="backtop-list">
         backTop组件
         <div
@@ -11,8 +11,8 @@
           placeholder {{ index }}
         </div>
       </div>
+      <BackTop />
     </el-scrollbar>
-    <BackTop />
   </div>
 </template>
 <script>

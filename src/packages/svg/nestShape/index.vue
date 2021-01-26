@@ -35,6 +35,23 @@
           y="-25"
           :xlink:href="defaultImage"
         />
+        <g transform="translate(5,-17.5)">
+          <circle
+            r="10"
+            cx="10"
+            cy="0"
+            stroke="none"
+            :fill="levelColor[1]"
+          />
+          <text
+            x="5"
+            y="5"
+            stroke="none"
+            fill="#fff"
+          >
+            1
+          </text>
+        </g>
       </g>
     </svg>
     <div
@@ -206,6 +223,11 @@ export default {
         top: 0,
         opacity: 0,
         transition: ''
+      },
+      levelColor: {
+        1: 'red',
+        2: 'green',
+        3: 'blue'
       }
     }
   },
