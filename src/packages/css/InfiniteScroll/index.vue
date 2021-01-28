@@ -1,27 +1,23 @@
 <template>
-  <div class="InfiniteScroll">
+  <div v-loading="loading" class="InfiniteScroll">
+    <div class="holder-wrap" />
     <el-scrollbar class="custom-el-scroll">
       <div
         v-infinite-scroll="loadMore"
         infinite-scroll-immediate-check="false"
         infinite-scroll-disabled="busy"
-        infinite-scroll-distance="30"
+        infinite-scroll-distance="0"
         class="infinite-scroll-wrap"
       >
-        <div
-          v-for="(item, index) in lists"
-          :key="'list-li-'+index"
-          class="infinite-scroll-wrap-li"
-        >
-          {{ item }}
+        <div v-for="(item, index) in 8" :key="'list-li-' + index" class="infinite-scroll-wrap-li">
+          {{ item }}test
         </div>
       </div>
-      <div v-if="loading">加载中...</div>
+      <!-- <div v-if="loading">加载中...</div> -->
     </el-scrollbar>
   </div>
 </template>
 <script>
-import { fetchList } from '@/api/article'
 import vueiInfinite from 'vue-infinite-scroll'
 export default {
   name: 'InfiniteScroll',
@@ -30,10 +26,11 @@ export default {
   data() {
     return {
       busy: false,
-      count: 0,
+      count: 21,
       lists: [],
       loading: false,
-      page: 1
+      page: 1,
+      limit: 8
     }
   },
   computed: {},
@@ -45,16 +42,23 @@ export default {
   },
   methods: {
     loadMore() {
-      this.busy = this.loading = true
+      const hasReceivedCounts = this.page * 8
+      // console.log('已经收到多少条数据', hasReceivedCounts)
+      if (hasReceivedCounts >= this.count) {
+        return false
+      }
       setTimeout(() => {
+        this.busy = this.loading = true
         const param = {
           page: this.page++,
-          limit: 18
+          limit: this.limit
         }
-        fetchList(param).then((res) => {
-          console.log(res)
-          this.lists = this.lists.concat(res.list)
-        })
+        console.log(this.page, '发送分页请求，参数为：' + JSON.stringify(param))
+        const list = []
+        for (let i = 0; i < 8; i++) {
+          list.push(i)
+        }
+        this.lists = this.lists.concat(list)
         this.busy = this.loading = false
       }, 1000)
     }
@@ -65,16 +69,21 @@ export default {
 .InfiniteScroll {
   width: 100%;
   height: 100%;
+  .holder-wrap {
+    width: 100%;
+    height: 300px;
+  }
   .infinite-scroll-wrap {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 300px);
     display: flex;
     flex-wrap: wrap;
     overflow: hidden;
     padding: 0 16px;
+    margin: 0 auto;
     .infinite-scroll-wrap-li {
-      width: 200px;
-      height: 200px;
+      width: 400px;
+      height: 400px;
       border: 1px solid skyblue;
       text-align: center;
       line-height: 200px;
@@ -86,7 +95,7 @@ export default {
     .el-scrollbar__wrap {
       overflow-x: hidden;
       height: 100%;
-      .el-scrollbar__view{
+      .el-scrollbar__view {
         width: 100%;
       }
     }
