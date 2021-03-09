@@ -9,3 +9,6 @@
 2.页面没有任何操作，不断发送请求进行加载
 
 解决：数据请求完成之后，this.busy = false放在ajax请求外面；这样可以避免，当请求数据为0时，不断重复加载
+
+
+<!--https://blog.csdn.net/LLL_liuhui/article/details/103588512->

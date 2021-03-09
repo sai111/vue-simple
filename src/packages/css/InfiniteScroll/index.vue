@@ -42,25 +42,27 @@ export default {
   },
   methods: {
     loadMore() {
-      const hasReceivedCounts = this.page * 8
-      // console.log('已经收到多少条数据', hasReceivedCounts)
-      if (hasReceivedCounts >= this.count) {
-        return false
-      }
-      setTimeout(() => {
-        this.busy = this.loading = true
-        const param = {
-          page: this.page++,
-          limit: this.limit
-        }
-        console.log(this.page, '发送分页请求，参数为：' + JSON.stringify(param))
-        const list = []
-        for (let i = 0; i < 8; i++) {
-          list.push(i)
-        }
-        this.lists = this.lists.concat(list)
-        this.busy = this.loading = false
-      }, 1000)
+      this.busy = true
+      // const hasReceivedCounts = this.page * 8
+      // // console.log('已经收到多少条数据', hasReceivedCounts)
+      // if (hasReceivedCounts >= this.count) {
+      //  return false
+      // }
+      // setTimeout(() => {
+      //  this.busy = this.loading = true
+      //  const param = {
+      //    page: this.page++,
+      //    limit: this.limit
+      //  }
+      //  console.log(this.page, '发送分页请求，参数为：' + JSON.stringify(param))
+      //  const list = []
+      //  for (let i = 0; i < 8; i++) {
+      //    list.push(i)
+      //  }
+      //  this.lists = this.lists.concat(list)
+      //  //this.busy = this.loading = false
+      // }, 1000)
+      this.busy = false
     }
   }
 }
