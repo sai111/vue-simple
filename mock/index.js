@@ -3,9 +3,10 @@ const { param2Obj } = require('./utils')
 
 // const article = require('./article')
 const piece = require('./piece')
-
+const card = require('./card')
 const mocks = [
   // ...article,
+  ...card,
   ...piece
 ]
 
