@@ -17,7 +17,7 @@ export default {
   mounted() {},
   methods: {
     handleChange(val) {
-      console.log(val, 'val--000099999')
+      // console.log(val, 'val--000099999')
     }
   }
 }
