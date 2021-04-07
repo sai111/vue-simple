@@ -1,13 +1,17 @@
 <!-- indexDB文档 -->
 ## [indexDB 浏览器数据库入门教程](http://www.ruanyifeng.com/blog/2018/07/indexeddb.html)
-
+https://w3c.github.io/IndexedDB/#database-interface
 
 [TOC]
 
-### 1. 概述
+### 一. 概述
 
 [入门教程]:  http://www.ruanyifeng.com/blog/2018/07/indexeddb.html
 
+[入门教程2]: https://www.zhangxinxu.com/wordpress/2017/07/html5-indexeddb-js-example/
+
+[入门教程3]: https://segmentfault.com/a/1190000023056335
+https://segmentfault.com/a/1190000014950564
 #### 1.简单介绍
 
 随着浏览器的功能不断增强，更多的网站考虑，将大量数据储存在客户端，这样可以减少从服务器获取数据，直接从本地获取数据
@@ -42,7 +46,7 @@
 
 
 
-### 2. 基本概念
+### 二. 基本概念
 
 ​        IndexedDB 是一个比较复杂的 API，涉及不少概念。它把不同的实体，抽象成一个个对象接口。学习这个 API，就是学习它的各种对象接口
 
@@ -292,7 +296,7 @@ read()
 
 -----
 
-### 3.5 遍历数据
+#### 3.5 遍历数据
 
 遍历数据表格的所有记录，要使用指针对象 IDBCursor。
 
@@ -324,7 +328,7 @@ read()
 
 ------
 
-### 3.6 更新数据
+#### 3.6 更新数据
 
 更新数据要使用`IDBObject.put()`方法。
 
@@ -352,7 +356,7 @@ read()
 
 
 
-### 3.7 删除数据
+#### 3.7 删除数据
 
 `IDBObjectStore.delete()`方法用于删除记录。
 
@@ -372,7 +376,7 @@ read()
 
 ---
 
-### 3.8 使用索引
+#### 3.8 使用索引
 
 索引的意义在于，可以让你搜索任意字段，也就是说从任意字段拿到数据记录。如果不建立索引，默认只能搜索主键（即从主键取值）。
 
@@ -412,4 +416,92 @@ read()
 [浏览器兼容]: https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API#Browser_compatibility
 
  https://caniuse.com/#search=IndexedDB
+
+[实例教程]: https://www.zhangxinxu.com/wordpress/2017/07/html5-indexeddb-js-example/
+[indexedDB使用与出坑记录]: https://juejin.cn/post/6844903570005835789
+
+[[indexedDB聊天记录存储方法总结](https://segmentfault.com/a/1190000023044094)]   https://segmentfault.com/a/1190000023044094?utm_source=sf-similar-article
+
+[简介 IndexedDB 及详解 IndexedDB 在实际项目中可能存在的问题与解决方案]https://blog.csdn.net/caod1991/article/details/103862550
+
+### 四. 使用总结，坑⚠️
+
+- [张鑫旭-HTML5 indexedDB前端本地存储数据库实例教程](https://www.zhangxinxu.com/wordpress/2017/07/html5-indexeddb-js-example/)
+- [阮一峰-浏览器数据库 IndexedDB 入门教程](http://www.ruanyifeng.com/blog/2018/07/indexeddb.html)
+- [阮一峰-IndexedDB API](https://wangdoc.com/javascript/bom/indexeddb.html)
+
+#### ⚠️ 1. 不能动态添加表
+
+  indexedDB 中 `createObjectStore`(类似新增表)和`deleteObjectStore`(类似删除表)方法只有在onupgradeneeded 中调用。而表有时候又是动态的，所以做了一下的封装。
+
+​    
+
+```
+/**
+ * 根据数据库中是否包含表名会自动升级数据库
+ * @param dbName         数据库名称
+ * @param storeNames     表名-arrays
+ * @param version        数据库版本号
+ */
+export async function openDatabase(dbName, storeNames = [], version = undefined) {
+    return new Promise((resolve, reject) => {
+        const request = window.indexedDB.open(dbName, version)
+        request.onsuccess = (event) => {
+            const db = event.target.result
+
+            let isNeedUpdate = false
+            for (let i = 0; i < storeNames.length; i++) {
+                if (!db.objectStoreNames.contains(storeNames[i])) {
+                    isNeedUpdate = true
+                    break
+                }
+            }
+
+            function callback(db) {
+                if (db) {
+                    resolve(db)
+                } else {
+                    reject(`can't open ${dbName}`)
+                }
+            }
+
+            if (isNeedUpdate) {
+                const version = db.version + 1
+                db.close()
+                openDatabase(dbName, storeNames, version).then((db) => {
+                    callback(db)
+                })
+            } else {
+                callback(db)
+            }
+        }
+        request.onerror = (e) => {
+            reject(e)
+        }
+        request.onblocked = () => {
+            reject(`${dbName} is blocked.`)
+        }
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result
+            for (const storeName of storeNames) {
+                if (!db.objectStoreNames.contains(storeName)) {
+                    db.createObjectStore(storeName, {
+                        keyPath: "key"
+                        // autoIncrement: true
+                    })
+                }
+            }
+        }
+    })
+}
+```
+
+
+
+#### ⚠️ 2. 主键不能更新
+
+我的需求是把一个文件列表存入数据库。之前是把文件完整路径作为了主键。但是当遇到修改文件名或移动文件，文件路径就会发生变更的这种情况，就需要更新主键。然而并没有找到这样的方法
+
+> `IDBObjectStore.put(item, key)`方法用于更新某个主键对应的数据记录，如果对应的键值不存在，则插入一条新的记录。该方法返回一个 IDBRequest 对象。
+> 该方法接受两个参数，第一个参数为新数据，第二个参数为主键，该参数可选，且只在自动递增时才有必要提供，因为那时主键不包含在数据值里面。
 
