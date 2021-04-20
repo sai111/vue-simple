@@ -31,10 +31,10 @@ export default {
   watch: {},
   mounted() {
     var that = this
-    document.getElementById('resultScroll').addEventListener('scroll', that.onscroll(), true)
+    document.getElementById('resultScroll').addEventListener('scroll', that.onscroll.bind(this), true)
   },
   beforeDestroy() {
-    document.getElementById('resultScroll').removeEventListener('scroll', this.onscroll(), true)
+    document.getElementById('resultScroll').removeEventListener('scroll', that.onscroll.bind(this), true)
   },
   methods: {
     bindScrollEvent() {},
@@ -84,7 +84,7 @@ export default {
   }
   .demo-list {
     width: 100%;
-    height: 100%;
+    min-height: 450px;
     .demo-list-li {
       width: 100px;
       height: 60px;
