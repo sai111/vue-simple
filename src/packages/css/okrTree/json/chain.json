@@ -7,10 +7,10 @@
         "children": [
           {
             "children": [],
-            "id": "1343745732733431809",
-            "parentId": 1341345605927690241,
-            "value": "http://45.195.167.19:9944",
-            "title": "日本一本在线高清视频,好好热日本手机视频观",
+            "id": "40",
+            "parentId": 78,
+            "value": "测试111",
+            "title": "测试111",
             "webType": "website_code",
             "edit": false,
             "sum": 1,
@@ -18,10 +18,10 @@
           },
           {
             "children": [],
-            "id": "1343745732787957761",
-            "parentId": 1341345605927690241,
-            "value": "http://154.213.152.47:9001",
-            "title": "日本一本在线高清视频,好好热日本手机视频观",
+            "id": "335",
+            "parentId": 223,
+            "value": "http",
+            "title": "手机视频观",
             "webType": "website_code",
             "edit": false,
             "sum": 1,
@@ -29,17 +29,17 @@
           },
           {
             "children": [],
-            "id": "1343745732880232450",
-            "parentId": 1341345605927690241,
-            "value": "http://154.220.50.62:9080",
-            "title": "日本一本在线高清视频,好好热日本手机视频观",
+            "id": "55",
+            "parentId": 55,
+            "value": "http",
+            "title": "视频观",
             "webType": "website_code",
             "edit": false,
             "sum": 1,
             "direction": null
           }
         ],
-        "id": "1341345605927690241",
+        "id": "66",
         "parentId": 0,
         "value": null,
         "title": "四方支付平台",
@@ -49,110 +49,31 @@
         "direction": "left"
       },
       {
-        "children": [],
-        "id": "1341345606179348482",
-        "parentId": 0,
-        "value": null,
-        "title": "跑分平台",
-        "webType": "running_platform",
-        "edit": true,
-        "sum": 1,
-        "direction": "right"
-      },
-      {
-        "children": [
-          {
-            "children": [],
-            "id": "1343745768171106305",
-            "parentId": 1341345606326149121,
-            "value": "http://45.195.167.19:9944",
-            "title": "日本一本在线高清视频,好好热日本手机视频观",
-            "webType": "website_code",
-            "edit": false,
-            "sum": 1,
-            "direction": null
-          },
-          {
-            "children": [],
-            "id": "1343745768250798082",
-            "parentId": 1341345606326149121,
-            "value": "http://154.201.217.105:9944",
-            "title": "日本一本在线高清视频,好好热日本手机视频观",
-            "webType": "website_code",
-            "edit": false,
-            "sum": 1,
-            "direction": null
-          }
-        ],
-        "id": "1341345606326149121",
-        "parentId": 0,
-        "value": null,
-        "title": "代理平台",
-        "webType": "agent_platform",
-        "edit": true,
-        "sum": 2,
-        "direction": "left"
-      },
-      {
-        "children": [
-          {
-            "children": [],
-            "id": "1343745840732565505",
-            "parentId": 1341345606472949762,
-            "value": "154.201.239.211",
-            "title": null,
-            "webType": "ip_code",
-            "edit": false,
-            "sum": 1,
-            "direction": null
-          },
-          {
-            "children": [],
-            "id": "1343745840791285761",
-            "parentId": 1341345606472949762,
-            "value": "http://45.195.167.19:9944",
-            "title": "日本一本在线高清视频,好好热日本手机视频观",
-            "webType": "website_code",
-            "edit": false,
-            "sum": 1,
-            "direction": null
-          }
-        ],
-        "id": "1341345606472949762",
-        "parentId": 0,
-        "value": null,
-        "title": "配置管理",
-        "webType": "configuration",
-        "edit": true,
-        "sum": 2,
-        "direction": "right"
-      },
-      {
         "children": [
           {
             "children": [
               {
-                "id": "134353879348869529712",
-                "parentId": 134134560667847065812,
-                "value": "http://45.195.167.19:9944",
-                "title": "66日本一本在线高清视频,好好热日本手机视频观",
+                "id": "14",
+                "parentId": 14,
+                "value": "htt",
+                "title": "66视频观",
                 "webType": "website_code",
                 "edit": false,
                 "sum": 1,
                 "direction": null
               }
             ],
-            "id": "1343538793488695297",
-            "parentId": 1341345606678470658,
-            "value": "http://45.195.167.19:9944",
-            "title": "55日本一本在线高清视频,好好热日本手机视频观",
+            "id": "12",
+            "parentId": 12,
+            "value": "http",
+            "title": "55视频观",
             "webType": "website_code",
             "edit": false,
             "sum": 1,
             "direction": null
           }
         ],
-        "id": "1341345606678470658",
+        "id": "15",
         "parentId": 0,
         "value": null,
         "title": "广告投放",
@@ -162,10 +83,10 @@
         "direction": "left"
       }
     ],
-    "id": "1341345605659254786",
+    "id": "20",
     "parentId": null,
-    "value": "154.201.239.211",
-    "title": "bet36365体育在线live_365体育投注登录",
+    "value": "测试111999",
+    "title": "测试111999",
     "webType": "gambling",
     "edit": true,
     "sum": null,
