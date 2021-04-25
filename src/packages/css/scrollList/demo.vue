@@ -1,6 +1,6 @@
 <template>
   <div ref="waterfall" class="scroll-list">
-    <el-scrollbar
+    <div
       id="resultScroll"
       ref="scrollbar"
     >
@@ -9,7 +9,7 @@
           {{ item.label }}
         </div>
       </div>
-    </el-scrollbar>
+    </div>
   </div>
 </template>
 <script>
@@ -39,12 +39,14 @@ export default {
   methods: {
     bindScrollEvent() {},
     onscroll() {
+      console.log(this.$refs, 'eeeee')
       // 滚动条高度
-      const sh = this.$refs['scrollbar'].$refs['wrap'].scrollHeight
+      const sh = this.$refs['scrollbar'].scrollHeight
       // 滚动条距离顶部的距离
-      const st = this.$refs['scrollbar'].$refs['wrap'].scrollTop
+      const st = this.$refs['scrollbar'].scrollTop
       // 滚动条外容器的可视高度
-      const ch = this.$refs['scrollbar'].$refs['wrap'].clientHeight
+      const ch = this.$refs['scrollbar'].clientHeight
+      console.log(sh, 'sth--->>>', st, ch)
       if (st + ch >= sh) {
         this.pageNum += 1
         this.getData()
@@ -61,7 +63,7 @@ export default {
 <style lang="scss" scoped>
 .scroll-list {
   width: 500px;
-  height: 400px;
+  height: 100%;
   ::v-deep .el-scrollbar {
     width: 100%;
     height: 100%;
@@ -76,8 +78,8 @@ export default {
   }
   #resultScroll {
     width: 100%;
-    height: 100%;
-    //overflow-y: auto;
+    height: 400px;
+    overflow-y: auto;
     border: 1px solid red;
   }
   .demo-list {
