@@ -30,5 +30,4 @@ const piecesRouter = {
     // }
   ]
 }
-
 export default piecesRouter

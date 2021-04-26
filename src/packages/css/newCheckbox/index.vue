@@ -21,10 +21,6 @@ export default {
     RhCheckboxGroup,
     RhCheckbox
   },
-  props: {
-    msg: String
-  },
-  // name: 'HrhloWorld',
   data() {
     return {
       checkList: []

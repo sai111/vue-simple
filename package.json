@@ -17,6 +17,7 @@
     "new:view": "node ./scripts/generateView/index"
   },
   "dependencies": {
+    "stats.js": "^0.17.0",
     "axios": "^0.18.1",
     "clipboard": "2.0.4",
     "core-js": "3.6.5",
