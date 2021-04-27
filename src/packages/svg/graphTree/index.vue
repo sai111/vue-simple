@@ -1,19 +1,24 @@
 <template>
   <div class="graphTree">
     GraphTree
-    <result-magnifier ref="magnifier" :origin-viewbox="viewbox" class="tree-chart-magnifier">
-      <tree-node
-        v-for="(child, childIndex) in dataList"
-        slot="content"
-        :key="'tree-chart-node-' + childIndex + child.id"
-        :max-level="maxLevel"
-        :node-level="child.level"
-        :child-nodes="child"
-        :child-index="childIndex"
-        :child-length="child.length || childIndex"
-        :transform="`translate(0, ${58 * (child.length || childIndex)})`"
-      />
-    </result-magnifier>
+    <div class="tree-recovery" @click="handleRecovery">
+      复位
+    </div>
+    <div class="tree-wrap">
+      <result-magnifier ref="magnifier" :origin-viewbox="viewbox" class="tree-chart-magnifier">
+        <tree-node
+          v-for="(child, childIndex) in dataList"
+          slot="content"
+          :key="'tree-chart-node-' + childIndex + child.id"
+          :max-level="maxLevel"
+          :node-level="child.level"
+          :child-nodes="child"
+          :child-index="childIndex"
+          :child-length="child.length || childIndex"
+          :transform="`translate(0, ${58 * (child.length || childIndex)})`"
+        />
+      </result-magnifier>
+    </div>
   </div>
 </template>
 <script>
@@ -42,6 +47,9 @@ export default {
     this.getData()
   },
   methods: {
+    handleRecovery() {
+      this.$refs.magnifier.recovery()
+    },
     getData() {
       const res = require('./json/index.json')
       const { tree, maxLevel } = new TransferTree({ data: res.data })
@@ -55,5 +63,10 @@ export default {
 .graphTree {
   width: 100%;
   height: 100%;
+  .tree-recovery {
+    font-size: 20px;
+    cursor: pointer;
+    color: #31c051;
+  }
 }
 </style>

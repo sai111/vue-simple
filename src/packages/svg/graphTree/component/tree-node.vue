@@ -12,39 +12,40 @@
         x="20"
         y="17"
       >
-        {{ childNodes.name }}
+        {{ childNodes.name }}index{{ childIndex }}level{{ childNodes.level }}
       </text>
+    </g>
+    <g class="tree-node-line">
+      <rect
+        fill="#31c051"
+        width="6"
+        height="6"
+        x="0"
+        :y="formatY(childIndex, 13)"
+        :transform="`translate(${childNodes.level > 1 ? 10 : 165}, 0)`"
+      />
+      <path
+        v-if="childNodes.level > 1"
+        fill="none"
+        stroke="#31c051"
+        stroke-width="2"
+        :d="`M-130,16 L13,${18} 13,18`"
+      />
+      <!-- M-130,16 L13,${18} 13,18 -->
     </g>
     <g
       v-if="childNodes.children&&childNodes.children.length>0"
       class="tree-node-tree"
     >
-      <!--<g class="tree-node-line" transform="translate(165,0)">
-        <rect
-          fill="#31c051"
-          width="6"
-          height="6"
-          x="0"
-          :y="childIndex * 58 + 15"
-        />
-        <g class="link-two-three">
-          <path
-            fill="none"
-            stroke="#31c051"
-            stroke-width="2"
-            :d="`M3,18 L145,${childLength * 58 + 18} 145,0`"
-          />
-        </g>
-      </g>-->
       <TreeNode
         v-for="(child, index) in childNodes.children"
         :key="'child-tree-chart-node-'+index+child.id"
         :node-level="child.level"
         :child-nodes="child"
+        :child-index="index"
         :child-length="child.length||index"
-        :transform="formatTransform(child, index)"
+        :transform="formatTransform(child, index, childNodes)"
       />
-      <!-- translate(${300}, ${(childIndex) * 58}) -->
     </g>
   </g>
 </template>
@@ -85,8 +86,21 @@ export default {
   },
   mounted() {},
   methods: {
-    formatTransform(node, index) {
-      return `translate(300, ${index * 58})`
+    formatY(index, distance) {
+      return index > 0 ? index * distance : index * distance + distance
+    },
+    formatLine(node, index) {
+      return `'translate(${node.level > 1 ? 0 : 300}, 10)'`
+    },
+    formatTransform(node, index, childNodes) {
+      // let tmp = null
+      // if (node && node.parent) {
+      //  tmp = node.parent.find((v) => v.level === node.level)
+      //  const tmpArr = tmp.children[node.sequence]
+      //  console.log(node, 'node---->>>', index, tmpArr, tmp)
+      // }
+      // console.log(this.childIndex, 'childIndex')
+      return `translate(300, ${(index + node.sequence) * 58})`
     }
   }
 }

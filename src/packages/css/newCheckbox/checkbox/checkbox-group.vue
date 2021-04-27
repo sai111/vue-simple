@@ -15,13 +15,36 @@ export default {
   },
 
   props: {
-    value: {},
-    disabled: Boolean,
-    min: Number,
-    max: Number,
-    size: String,
-    fill: String,
-    textColor: String
+    value: {
+      type: Object,
+      default: function() {
+        return {}
+      }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    min: {
+      type: Number,
+      default: 1
+    },
+    max: {
+      type: Number,
+      default: 100
+    },
+    size: {
+      type: String,
+      default: 'mini'
+    },
+    fill: {
+      type: String,
+      default: undefined
+    },
+    textColor: {
+      type: String,
+      default: '#000'
+    }
   },
 
   computed: {

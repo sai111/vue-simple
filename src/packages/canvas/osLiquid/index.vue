@@ -19,8 +19,10 @@ export default {
   computed: {},
   watch: {},
   mounted() {
-    this.liquid = new Liquid({ canvas: this.$refs.canvas })
-    // this.init()
+    this.liquid = new Liquid({
+      canvas: this.$refs.canvas,
+      settings: { value: 0.6 }
+    })
   },
   beforeDestroy() {
     this.liquid.destory()
