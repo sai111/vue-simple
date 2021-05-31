@@ -3,17 +3,26 @@
 import Stats from 'stats.js'
 const DEFAULT_SETTINGS = {
   env: 'dev',
+  value: 0,
   width: 200,
   height: 200,
-  radius: 200,
+  radius: 100,
+  currentValue: 0, // 当前value
+  speedH: 0.5, // 水平移动速率
+  speedV: 0.5, // 垂直上升速率
+  waveHeight: 60, // 高度
   waveSpeed: 0.5, // 速度
   waveOffset: 0, // 频率
-  waveHeight: 60, // 高度
-  controlPointOffsetRate: 0.2,
+  controlPointOffsetRate: 0.2, // 控制点
   color: {
     startColor: '#f64',
     endColor: '#fec'
-  }
+  },
+  waves: [
+    { offset: -0.7, speed: 1.31, opacity: 0.4 },
+    { offset: -0.3, speed: 0.91, opacity: 0.6 },
+    { offset: 0, speed: 0.7, opacity: 0.9 }
+  ]
 }
 // 2倍绘制
 const DRAW_RATE = 1
@@ -48,7 +57,6 @@ export default class Liquid {
   }
 
   init() {
-    console.log('初始化--->>>>>', this)
     // 初始化context
     this.ctx = this.canvas.getContext('2d')
 
@@ -75,6 +83,7 @@ export default class Liquid {
     this.currentTime = Date.now()
     const delt = this.currentTime - this.lastTime // 当前帧和前一帧间相差的时间
     const total = this.currentTime - this.startTime
+    this.lastTime = this.currentTime
     this.draw({ delt, total })
     this.ticker = requestAnimationFrame(this.tick.bind(this))
   }
@@ -114,21 +123,38 @@ export default class Liquid {
   }
 
   draw({ delt, total }) {
+    // % 是取余 案例： %1 任何整数都会被1整除，即余数是0。利用这个规则来判断是否是整数
     this.ctx.clearRect(0, 0, this.settings.width, this.settings.height)
-    this.settings.waveOffset -= delt / 1000 * this.settings.waveSpeed
-    const offset = (this.settings.waveOffset % 1) * this.settings.radius * 2
-    const height = (1 - this.settings.value) * this.settings.radius
-    this.ctx.drawImage(
-      this.osc,
-      0,
-      0,
-      this.osc.width,
-      this.osc.height,
-      offset,
-      height,
-      this.osc.width / DRAW_RATE,
-      this.osc.height / DRAW_RATE
-    )
+    // this.settings.waveOffset -= delt / 1000 * this.settings.waveSpeed
+    // const offset = (this.settings.waveOffset % 1) * this.settings.radius * 2
+    if (this.settings.currentValue !== this.settings.value) {
+      if (this.settings.currentValue <= this.settings.value) {
+        this.settings.currentValue = Math.min(this.settings.currentValue + delt * this.settings.speedV / 1000, this.settings.value)
+      } else {
+        this.settings.currentValue = Math.min(this.settings.currentValue - delt * this.settings.speedV / 1000, this.settings.value)
+      }
+      if (this.onValueChange) {
+        this.onValueChange(this.settings.currentValue)
+      }
+    }
+    const height = (1 - this.settings.currentValue) * this.settings.radius
+    // 多层波浪
+    for (const wave of this.settings.waves) {
+      wave.offset -= delt / 1000 * wave.speed
+      this.ctx.globalAlpha = wave.opacity
+      const offset = (wave.offset % 1) * this.settings.radius * 2
+      this.ctx.drawImage(
+        this.osc,
+        0,
+        0,
+        this.osc.width,
+        this.osc.height,
+        offset,
+        height,
+        this.osc.width / DRAW_RATE,
+        this.osc.height / DRAW_RATE
+      )
+    }
   }
 
   resize() {
@@ -138,5 +164,14 @@ export default class Liquid {
     this.settings.radius = 0.5 * Math.min(width, height)
     this.refresh({ width, height })
   }
-  destory() {}
+  destory() {
+    cancelAnimationFrame(this.ticker)
+    this.osc = null
+    this.osctx = null
+    this.canvas = null
+    this.ctx = null
+    if (this.settings.env === 'env') {
+      document.body.removeChild(this.stats.dom)
+    }
+  }
 }

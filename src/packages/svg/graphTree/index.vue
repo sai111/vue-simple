@@ -52,8 +52,8 @@ export default {
     },
     getData() {
       const res = require('./json/index.json')
-      const { tree, maxLevel } = new TransferTree({ data: res.data })
-      this.maxLevel = maxLevel
+      const { tree } = new TransferTree({ data: res.data })
+      // this.maxLevel = maxLevel
       this.dataList.splice(0, this.dataList.length, ...tree)
     }
   }
@@ -63,6 +63,12 @@ export default {
 .graphTree {
   width: 100%;
   height: 100%;
+  .tree-wrap {
+    margin: 0 auto;
+    width: 1000px;
+    height: 500px;
+    border: 1px solid red;
+  }
   .tree-recovery {
     font-size: 20px;
     cursor: pointer;

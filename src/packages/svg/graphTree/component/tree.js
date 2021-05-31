@@ -3,15 +3,38 @@ export default class TransferTree {
     this.tree = []
     this.init(options.data)
   }
-
   init(data) {
-    this.maxLevel = this.getMaxFloor(data, 1)
+    //this.maxLevel = this.getMaxFloor(data, 1)
+    this.rhTransferData(data)
     this.tree = data
   }
+
+  rhTransferData(data, level = 1, id) {
+    const _self = this
+    if (Array.isArray(data)) {
+      data.forEach((v, i) => {
+        v.level = level
+        v.parentId = id || 0
+        v.sequence = i
+        if (v.children && v.children.length) {
+          const _clen = v.children.length
+          const isOdd = !(_clen % 2 === 0)
+          v.cChildIndex = isOdd ? ((_clen + 1) / 2) - 1 : (_clen / 2)
+          v.isOdd = isOdd
+          _self.rhTransferData(v.children, level + 1, v.id)
+        } else {
+          v.cChildIndex = 0
+          v.isOdd = true
+        }
+      })
+    }
+  }
+
   getMaxFloor(data) {
     let max = 0
     let parentArr = []
-    function each(data, level = 1, id = 0, len1 = 0, len2 = 0) {
+
+    function each(data, level = 1, id = 0) {
       if (data && Array.isArray(data)) {
         for (let i = 0; i < data.length; i++) {
           const v = data[i]
@@ -23,10 +46,10 @@ export default class TransferTree {
           if (id && v.id === id) {
             parentArr = [v]
           }
-          v.len = len2
-          len2 += Math.max(1, v.children ? v.children.length : 0)
+          //v.len = len2
+          //len2 += Math.max(1, v.children ? v.children.length : 0)
           if (v.children && v.children.length > 0) {
-            each(v.children, level + 1, v.id, len1, len2)
+            each(v.children, level + 1, v.id)
             if (parentArr !== undefined) {
               parentArr = parentArr.concat(v)
               v.parent = parentArr
@@ -64,4 +87,19 @@ export default class TransferTree {
       }
     }
   }
+
+  /**
+   * https://www.d3js.org.cn/document/d3-hierarchy/
+   * http://www.qiutianaimeili.com/html/page/2020/08/2059av2l2r7z184.html
+   * @param {*} 数据预处理
+   * 使用 d3.hierarchy 进行数据的处理，转化为层级图都需要的数据 
+   * 转换为：
+   * children: 节点的子节点
+   * data: 节点的原始数据
+   * depth: 节点深度，根节点为 0
+   * height: 节点的高度，叶子节点为 0
+   * parent: 节点的父节点，根节点为 null
+   * 资料：
+   * https://github.com/antvis/hierarchy
+   */
 }
