@@ -30,7 +30,7 @@ export default {
       value: [20, 50],
       height: '6px',
       min: 0,
-      max: 100,
+      max: 105,
       extraLabel: '风险总分',
       extraRegion: true, // 区间
       visualMap: [
@@ -71,43 +71,43 @@ export default {
     initValue(val) {
       let tmpValue = []
       if (this.range) {
-        const p0 = val[0] >= this.min ? this.min : val[0]
-        const p3 = val[1] >= this.max ? val[1] : this.max
         tmpValue = [
           {
             start: val[0],
             end: val[1],
             label: '一般关注',
-            diff: val[1] - val[0],
+            diff: `${(val[1] - val[0]) / (this.max - this.min) * 100}%`,
+            left: `${val[0] / (this.max - this.min) * 100}%`,
             style: {
               background: '#F59A23'
             }
           }
         ]
-        if (p0 < val[0]) {
+        if (this.min < val[0]) {
           tmpValue.unshift({
             start: this.min,
             end: val[0],
             label: '持续监测',
-            diff: val[0] - this.min,
+            diff: `${(val[0] - this.min) / (this.max - this.min) * 100}%`,
+            left: '0%',
             style: {
               background: '#02A7F0'
             }
           })
         }
-        if (p3 > val[1]) {
+        if (this.max > val[1]) {
           tmpValue.push({
             start: val[1],
             end: this.max,
             label: '高度关注',
-            diff: this.max - val[1],
+            diff: `${(this.max - val[1]) / (this.max - this.min) * 100}%`,
+            left: `${val[1] / (this.max - this.min) * 100}%`,
             style: {
               background: '#D9001B'
             }
           })
         }
       }
-      console.log(tmpValue, 'marks1')
       this.extraMark = tmpValue
     }
   }

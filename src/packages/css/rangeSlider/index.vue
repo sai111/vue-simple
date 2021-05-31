@@ -250,7 +250,6 @@ export default {
       }
     },
     getStopStyle(item) {
-      console.log(item, 'item--->>>>', this.extraRegion)
       let tmpStyle = {}
       if (item.style) {
         tmpStyle = Object.assign({}, tmpStyle, item.style)
@@ -260,8 +259,8 @@ export default {
         tmpStyle.bottom = item.start + '%'
         tmpStyle.width = this.height
       } else {
-        tmpStyle.width = item.diff + '%'
-        tmpStyle.left = item.start + '%'
+        tmpStyle.width = item.diff
+        tmpStyle.left = item.left
         tmpStyle.height = this.height
       }
       return tmpStyle
