@@ -1,21 +1,55 @@
 <template>
   <div class="webUploader-entry">
     webUploader组件
-    <webUploader />
+    <web-uploader
+      :action="action"
+      :accept-text="acceptText+accept+'格式!'"
+      :size-text="sizeText+singleSize+'MB!'"
+      :accept="accept"
+      :single-size="singleSize"
+      :sum-size="sumSize"
+      @onStart="handleStart"
+    />
   </div>
 </template>
 <script>
-import webUploader from './index.vue'
+import WebUploader from './src/upload.vue'
 export default {
   name: 'webUploaderEntry',
-  components: { webUploader },
+  components: { WebUploader },
   data() {
-    return {}
+    return {
+      acceptText: '上传文件只能是',
+      sizeText: '上传文件大小不能超过',
+      accept: 'png,jpg,jpeg,image,text,word,xls,txt,zip,apk',
+      maxSize: 100,
+      singleSize: 100,
+      sumSize: 100 * 1024,
+      uploadFiles: [],
+      action: 'https://jsonplaceholder.typicode.com/posts/'
+    }
   },
   computed: {},
   watch: {},
+  beforeDestroy() {
+    this.revokeObject()
+  },
   mounted() {},
-  methods: {}
+  methods: {
+    handleStart(rawFile) {},
+    handleProgress(ev, rawFile) {},
+    handleSuccess(res, rawFile) {},
+    handleError(err, rawFile) {},
+    handleRemove(file, raw) {},
+    // 释放url对象
+    revokeObject() {
+      this.uploadFiles.forEach((file) => {
+        if (file.url && file.url.indexOf('blob:') === 0) {
+          URL.revokeObjectURL(file.url)
+        }
+      })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

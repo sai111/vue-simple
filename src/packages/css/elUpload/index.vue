@@ -1,11 +1,9 @@
 <template>
-  <div class="web-uploader">
-    demo
-  </div>
+  <div class="elUpload"></div>
 </template>
 <script>
 export default {
-  name: 'webUploader',
+  name: 'elUpload',
   props: {},
   data() {
     return {}
@@ -17,7 +15,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.web-uploader {
+.elUpload {
   width: 100%;
   height: 100%;
 }

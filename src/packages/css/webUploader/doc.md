@@ -472,6 +472,10 @@
 
 ## 资料整理
 
+https://www.helloweba.net/javascript/375.html
+
+https://www.helloweba.net/down/375.html
+
 断点续传
 多文件断点续传、分片上传、秒传、重试机制
 
@@ -485,3 +489,7 @@ https://www.zhangxinxu.com/wordpress/2013/11/xmlhttprequest-ajax-localstorage-%E
 https://juejin.cn/post/6844904055819468808
 
 https://juejin.cn/post/6847009774211432455
+
+
+## URL.revokeObjectURL
+https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL
