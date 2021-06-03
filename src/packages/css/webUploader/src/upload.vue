@@ -1,18 +1,9 @@
 <template>
-  <div
-    class="web-uploader"
-    @click="handleClick"
-    @keydown="handleKeydown"
-  >
+  <div class="web-uploader" @click="handleClick" @keydown="handleKeydown">
     <div class="web-uploader-wrap" tabindex="0">
-      <web-uploader-drag
-        :disabled="disabled"
-        @file="uploadFiles"
-      >
+      <web-uploader-drag :disabled="disabled" @file="uploadFiles">
         <i class="el-icon-upload" />
-        <div class="el-upload__text">
-          将文件拖到此处，或<em>点击上传</em>
-        </div>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       </web-uploader-drag>
       <input
         ref="input"
@@ -21,7 +12,7 @@
         :multiple="multiple"
         class="web-uploader-input"
         @change="handleChange"
-      >
+      />
     </div>
   </div>
 </template>
@@ -30,7 +21,7 @@ import props from './props.js'
 import WebUploaderDrag from './dragger.vue'
 export default {
   name: 'WebUploader',
-  components: { WebUploaderDrag },
+  components: {WebUploaderDrag},
   props: props,
   data() {
     return {
@@ -45,7 +36,7 @@ export default {
     }
   },
   provide() {
-    return { uploader: this }
+    return {uploader: this}
   },
   watch: {},
   mounted() {},
@@ -87,33 +78,32 @@ export default {
       // if (!this.beforeUpload) {
       //  return this.post(rawFile)
       // }
-      console.log(rawFile, '11111', before, before.then)
-      // if (before && before.then) {
-      //  before.then((proFile) => {
-      //    const fileType = Object.prototype.toString.call(proFile)
-      //    if (fileType === '[object File]' || fileType === '[object Blob]') {
-      //      if (fileType === '[object Blob]') {
-      //        proFile = new File([proFile], rawFile.name, {
-      //          type: rawFile.type
-      //        })
-      //      }
-      //      for (const p in rawFile) {
-      //        if (proFile[p]) {
-      //          proFile[p] = rawFile[p]
-      //        }
-      //      }
-      //      this.post(proFile)
-      //    } else {
-      //      this.post(rawFile)
-      //    }
-      //  }, () => {
-      //    //this.onRemove(null, rawFile)
-      //  })
-      // } else if (before !== false) {
-      //  this.post(rawFile)
-      // } else {
-      //  //this.onRemove(null, rawFile)
-      // }
+      if (before && before.then) {
+        before.then((proFile) => {
+          const fileType = Object.prototype.toString.call(proFile)
+          if (fileType === '[object File]' || fileType === '[object Blob]') {
+            if (fileType === '[object Blob]') {
+              proFile = new File([proFile], rawFile.name, {
+                type: rawFile.type
+              })
+            }
+            for (const p in rawFile) {
+              if (proFile[p]) {
+                proFile[p] = rawFile[p]
+              }
+            }
+            this.post(proFile)
+          } else {
+            this.post(rawFile)
+          }
+        }, () => {
+          //this.onRemove(null, rawFile)
+        })
+      } else if (before !== false) {
+        this.post(rawFile)
+      } else {
+        //this.onRemove(null, rawFile)
+      }
     },
     handleClick() {
       if (!this.disabled) {
@@ -138,15 +128,14 @@ export default {
       if (!this.multiple) {
         postFies = postFies.slice(0, 1)
       }
-      if (postFies.length === 0) { return }
+      if (postFies.length === 0) {return }
       postFies.forEach((rawFile) => {
         this.$emit('on-start', rawFile)
         if (this.autoUpload) this.upload(rawFile)
       })
     },
     abort(file) {
-      const { reqs } = this
-      console.log(reqs, 'reqs---->>>abort')
+      const {reqs} = this
       if (file) {
         let uid = file
         if (file.uid) uid = file.uid
@@ -160,18 +149,19 @@ export default {
       }
     },
     post(rawFile) {
-      console.log(rawFile, 'post--->>')
-      const { uid } = rawFile
+
+      const {uid} = rawFile
       const options = {
         headers: this.headers,
         file: rawFile,
         data: this.data,
-        filename: this.name,
+        filename: this.name || 'file',
         action: this.action,
         onProgress: (e) => {
+          console.log('🚀 ~ file: upload.vue ~ line 162 ~ post ~ e', e)
           this.$emit('onProgress', e, rawFile)
         },
-        onSucess: (res) => {
+        onSuccess: (res) => {
           this.$emit('onSuccess', res, rawFile)
           delete this.reqs[uid]
         },
@@ -181,10 +171,9 @@ export default {
         }
       }
       const req = this.httpRequest(options)
-      console.log(req, 'req-------0000')
-      this.regs[uid] = req
+      this.reqs[uid] = req
       if (req && req.then) {
-        req.then(options.onSucess, options.onError)
+        req.then(options.onSuccess, options.onError)
       }
     }
   }

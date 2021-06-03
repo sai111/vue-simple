@@ -2,7 +2,9 @@
   <div class="webUploader-entry">
     webUploader组件
     <web-uploader
+      ref="web-uploader"
       :action="action"
+      :multiple="multiple"
       :accept-text="acceptText+accept+'格式!'"
       :size-text="sizeText+singleSize+'MB!'"
       :accept="accept"
@@ -19,6 +21,7 @@ export default {
   components: { WebUploader },
   data() {
     return {
+      multiple: true,
       acceptText: '上传文件只能是',
       sizeText: '上传文件大小不能超过',
       accept: 'png,jpg,jpeg,image,text,word,xls,txt,zip,apk',
@@ -40,7 +43,26 @@ export default {
     handleProgress(ev, rawFile) {},
     handleSuccess(res, rawFile) {},
     handleError(err, rawFile) {},
-    handleRemove(file, raw) {},
+    handleRemove(file, raw) {
+      if (raw) {
+        file = this.getFile(raw)
+      }
+      let doRemove = () => {
+        this.abort(file)
+      }
+    },
+    getFile(rawFile) {
+      let fileList = this.uploadFiles
+      let target
+      fileList.every(item => {
+        target = rawFile.uid === item.uid ? item : null
+        return !target
+      })
+      return target
+    },
+    abort(file) {
+      this.$refs['web-uploader'].abort(file);
+    },
     // 释放url对象
     revokeObject() {
       this.uploadFiles.forEach((file) => {

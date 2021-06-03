@@ -38,6 +38,7 @@ export default function upload(option) {
 
   if (xhr.upload) {
     xhr.upload.onprogress = function progress(e) {
+      console.log('🚀 ~ file: ajax.js ~ line 41 ~ progress ~ e', e)
       if (e.total > 0) {
         e.percent = e.loaded / e.total * 100
       }
@@ -63,6 +64,7 @@ export default function upload(option) {
     if (xhr.status < 200 || xhr.status >= 300) {
       return option.onError(getError(action, option, xhr))
     }
+    console.log(option, 'option---6666')
     option.onSuccess(getBody(xhr))
   }
 

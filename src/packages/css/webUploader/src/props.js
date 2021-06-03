@@ -1,5 +1,9 @@
 import ajax from './ajax.js'
 export default {
+  name: {
+    type: String,
+    default: 'file'
+  },
   // 必选参数，上传的地址
   action: {
     type: String,
@@ -19,7 +23,7 @@ export default {
   // 是否支持多选文件
   multiple: {
     type: Boolean,
-    default: false
+    default: true
   },
   // 是否启用拖拽上传
   drag: {
