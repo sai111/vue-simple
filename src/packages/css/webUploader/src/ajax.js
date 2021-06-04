@@ -35,14 +35,13 @@ export default function upload(option) {
 
   const xhr = new XMLHttpRequest()
   const action = option.action
-
   if (xhr.upload) {
     xhr.upload.onprogress = function progress(e) {
-      console.log('🚀 ~ file: ajax.js ~ line 41 ~ progress ~ e', e)
+      //console.log('🚀 ~ file: ajax.js ~ line 41 ~ progress ~ e', e)
       if (e.total > 0) {
         e.percent = e.loaded / e.total * 100
       }
-      option.onProgress(e)
+      option.onprogress(e)
     }
   }
 
@@ -64,7 +63,6 @@ export default function upload(option) {
     if (xhr.status < 200 || xhr.status >= 300) {
       return option.onError(getError(action, option, xhr))
     }
-    console.log(option, 'option---6666')
     option.onSuccess(getBody(xhr))
   }
 
@@ -76,8 +74,8 @@ export default function upload(option) {
 
   const headers = option.headers || {}
 
-  for (let item in headers) {
-    if (headers.hasOwnProperty(item) && headers[item] !== null) {
+  for (var item in headers) {
+    if (headers[item] && headers[item] !== null) {
       xhr.setRequestHeader(item, headers[item])
     }
   }

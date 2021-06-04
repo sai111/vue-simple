@@ -27,7 +27,8 @@ export default {
     return {
       filesList: [],
       mouseover: false,
-      reqs: {}
+      reqs: {},
+      progress: {}
     }
   },
   computed: {
@@ -38,7 +39,14 @@ export default {
   provide() {
     return {uploader: this}
   },
-  watch: {},
+  watch: {
+    progress: {
+      deep: true,
+      handler(val) {
+        if (val) this.$emit('on-progress', val)
+      }
+    }
+  },
   mounted() {},
   methods: {
     isImage(str) {
@@ -50,7 +58,6 @@ export default {
       this.uploadFiles(files)
     },
     beforeUpload(file) {
-      console.log(file, 'file----beforeUpload')
       let errorType = true
       const reg = /\\|\/|\?|\？|\*|\"|\“|\”|\'|\‘|\’|\<|\>|\{|\}|\[|\]|\【|\】|\：|\:|\、|\^|\$|\!|\~|\`|\|/g
       const acceptType = this.accept.replace(reg, '').split(',')
@@ -97,12 +104,12 @@ export default {
             this.post(rawFile)
           }
         }, () => {
-          //this.onRemove(null, rawFile)
+          // this.onRemove(null, rawFile)
         })
       } else if (before !== false) {
         this.post(rawFile)
       } else {
-        //this.onRemove(null, rawFile)
+        // this.onRemove(null, rawFile)
       }
     },
     handleClick() {
@@ -149,7 +156,6 @@ export default {
       }
     },
     post(rawFile) {
-
       const {uid} = rawFile
       const options = {
         headers: this.headers,
@@ -158,11 +164,13 @@ export default {
         filename: this.name || 'file',
         action: this.action,
         onProgress: (e) => {
-          console.log('🚀 ~ file: upload.vue ~ line 162 ~ post ~ e', e)
-          this.$emit('onProgress', e, rawFile)
+          console.log(e, 'eee------progress')
+          const { percent } = e
+          this.progress[rawFile.name] = percent
+          //console.log('🚀 ~ file: upload.vue ~ line 162 ~ post ~ e', e)
         },
         onSuccess: (res) => {
-          this.$emit('onSuccess', res, rawFile)
+          this.$emit('on-success', res, rawFile)
           delete this.reqs[uid]
         },
         onError: (err) => {
@@ -182,7 +190,6 @@ export default {
 <style lang="scss" scoped>
 .web-uploader {
   width: 100%;
-  height: 100%;
   .web-uploader-wrap {
     .el-icon-upload {
       font-size: 67px;
