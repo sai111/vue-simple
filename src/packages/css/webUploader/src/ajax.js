@@ -37,11 +37,10 @@ export default function upload(option) {
   const action = option.action
   if (xhr.upload) {
     xhr.upload.onprogress = function progress(e) {
-      //console.log('🚀 ~ file: ajax.js ~ line 41 ~ progress ~ e', e)
       if (e.total > 0) {
         e.percent = e.loaded / e.total * 100
       }
-      option.onprogress(e)
+      option.onProgress(e)
     }
   }
 

@@ -18,6 +18,7 @@
   </div>
 </template>
 <script>
+//import * from './node/index.js'
 import WebUploader from './src/upload.vue'
 export default {
   name: 'WebUploaderEntry',
@@ -28,11 +29,11 @@ export default {
       acceptText: '上传文件只能是',
       sizeText: '上传文件大小不能超过',
       accept: 'png,jpg,jpeg,image,text,word,xls,txt,zip,apk',
-      maxSize: 100,
-      singleSize: 100,
+      maxSize: 100, // 个数最大100
+      singleSize: 100, // 100M
       sumSize: 100 * 1024,
       uploadFiles: [],
-      action: 'https://jsonplaceholder.typicode.com/posts/',
+      action: 'http://116.62.114.170:3000/file/upload',
       tempIndex: 1
     }
   },
@@ -71,7 +72,7 @@ export default {
   methods: {
     handleStart(rawFile) {
       rawFile.uid = Date.now() * 1 + this.tempIndex++
-      let file = {
+      const file = {
         status: 'ready',
         name: rawFile.name,
         size: rawFile.size,
@@ -91,13 +92,14 @@ export default {
       this.onChange(file, this.uploadFiles)
     },
     onChange(file, fileList) {
-      console.log(file, fileList, 'onChange', this.uploadFiles)
+      // console.log(file, fileList, 'onChange', this.uploadFiles)
     },
     handleProgress(ev, rawFile) {
+      //console.log(ev, rawFile, '111--->>>handleProgress')
       // const file = this.getFile(rawFile)
-      // this.onProgress(ev, file, this.uploadFiles) 不要显示
       // file.status = 'uploading'
       // file.percentage = ev.percent || 0
+      // console.log(file, 'file--->>>progress', ev, rawFile)
     },
     handleSuccess(res, rawFile) {
       const file = this.getFile(rawFile)
@@ -105,7 +107,7 @@ export default {
       if (file) {
         file.status = 'success'
         file.response = res
-        //this.onSuccess(res, file, this.uploadFiles)
+        // this.onSuccess(res, file, this.uploadFiles)
         this.onChange(file, this.uploadFiles)
       }
     },
@@ -114,17 +116,16 @@ export default {
       const fileList = this.uploadFiles
       file.status = 'fail'
       fileList.splice(fileList.indexOf(file), 1)
-
-      //this.onError(err, file, this.uploadFiles)
       this.onChange(file, this.uploadFiles)
+      console.log(err, 'err')
     },
     handleRemove(file, raw) {
       if (raw) {
         file = this.getFile(raw)
       }
-      let doRemove = () => {
+      const doRemove = () => {
         this.abort(file)
-        let fileList = this.uploadFiles
+        const fileList = this.uploadFiles
         fileList.splice(fileList.indexOf(file), 1)
         this.onRemove(file, fileList)
       }
@@ -142,7 +143,7 @@ export default {
       }
     },
     getFile(rawFile) {
-      let fileList = this.uploadFiles
+      const fileList = this.uploadFiles
       let target
       fileList.every((item) => {
         target = rawFile.uid === item.uid ? item : null

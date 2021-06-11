@@ -12,7 +12,7 @@
         :multiple="multiple"
         class="web-uploader-input"
         @change="handleChange"
-      />
+      >
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ import props from './props.js'
 import WebUploaderDrag from './dragger.vue'
 export default {
   name: 'WebUploader',
-  components: {WebUploaderDrag},
+  components: { WebUploaderDrag },
   props: props,
   data() {
     return {
@@ -37,7 +37,7 @@ export default {
     }
   },
   provide() {
-    return {uploader: this}
+    return { uploader: this }
   },
   watch: {
     progress: {
@@ -135,14 +135,14 @@ export default {
       if (!this.multiple) {
         postFies = postFies.slice(0, 1)
       }
-      if (postFies.length === 0) {return }
+      if (postFies.length === 0) { return }
       postFies.forEach((rawFile) => {
         this.$emit('on-start', rawFile)
         if (this.autoUpload) this.upload(rawFile)
       })
     },
     abort(file) {
-      const {reqs} = this
+      const { reqs } = this
       if (file) {
         let uid = file
         if (file.uid) uid = file.uid
@@ -156,7 +156,7 @@ export default {
       }
     },
     post(rawFile) {
-      const {uid} = rawFile
+      const { uid } = rawFile
       const options = {
         headers: this.headers,
         file: rawFile,
@@ -164,10 +164,9 @@ export default {
         filename: this.name || 'file',
         action: this.action,
         onProgress: (e) => {
-          console.log(e, 'eee------progress')
           const { percent } = e
           this.progress[rawFile.name] = percent
-          //console.log('🚀 ~ file: upload.vue ~ line 162 ~ post ~ e', e)
+          // console.log('🚀 ~ file: upload.vue ~ line 162 ~ post ~ e', e)
         },
         onSuccess: (res) => {
           this.$emit('on-success', res, rawFile)

@@ -493,3 +493,9 @@ https://juejin.cn/post/6847009774211432455
 
 ## URL.revokeObjectURL
 https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL
+
+
+## 批量上传
+https://www.cnblogs.com/chengpanpan/p/7074794.html
+https://www.oecom.cn/jsuploadprogress/
+https://juejin.cn/post/6844903968338870285
