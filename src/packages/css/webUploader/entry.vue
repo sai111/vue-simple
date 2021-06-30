@@ -1,169 +1,100 @@
 <template>
   <div class="webUploader-entry">
     webUploader组件
-    <web-uploader
+    <el-upload
       ref="web-uploader"
+      drag
+      multiple
       :action="action"
-      :multiple="multiple"
-      :accept-text="acceptText+accept+'格式!'"
-      :size-text="sizeText+singleSize+'MB!'"
+      :limit="maxLimit"
       :accept="accept"
-      :single-size="singleSize"
-      :sum-size="sumSize"
-      @on-start="handleStart"
-      @on-success="handleSuccess"
-      @on-progress="handleProgress"
+      :before-upload="beforeUpload"
+      :on-success="handleSuccess"
+      :on-progress="handleProgress"
+    >
+      <i class="el-icon-upload" />
+      <div class="el-upload__text">
+        将文件拖到此处，或<em>点击上传</em>
+      </div>
+      <div slot="tip" class="el-upload__tip">
+        上传文件是{{ accept }}格式! 大小{{ singleSize }}MB!
+      </div>
+    </el-upload>
+    <common-tab />
+    <!-- 弹窗 -->
+    <result-popover
+      v-if="resultVisible"
+      :file-list="uploadFiles"
+      style="width:400px;margin:0 auto;"
     />
-
   </div>
 </template>
 <script>
-//import * from './node/index.js'
-import WebUploader from './src/upload.vue'
+import CommonTab from './tab.vue'
+import ResultPopover from './result-popover.vue'
 export default {
   name: 'WebUploaderEntry',
-  components: { WebUploader },
+  components: { ResultPopover, CommonTab },
   data() {
     return {
       multiple: true,
       acceptText: '上传文件只能是',
       sizeText: '上传文件大小不能超过',
-      accept: 'png,jpg,jpeg,image,text,word,xls,txt,zip,apk',
-      maxSize: 100, // 个数最大100
+      accept: 'png/jpg/jpeg/image/text/word/xls/txt/zip/apk',
+      maxLimit: 100, // 个数最大100
       singleSize: 100, // 100M
       sumSize: 100 * 1024,
       uploadFiles: [],
+      fileList: [],
+      errList: [],
       action: 'http://116.62.114.170:3000/file/upload',
-      tempIndex: 1
+      tempIndex: 1,
+      resultVisible: true
     }
   },
   computed: {},
-  watch: {
-    listType(type) {
-      if (type === 'picture-card' || type === 'picture') {
-        this.uploadFiles = this.uploadFiles.map((file) => {
-          if (!file.url && file.raw) {
-            try {
-              file.url = URL.createObjectURL(file.raw)
-            } catch (err) {
-              console.error('上传错误', err)
-            }
-          }
-          return file
-        })
-      }
-    },
-    fileList: {
-      immediate: true,
-      handler(fileList) {
-        if (!fileList) return null
-        this.uploadFiles = fileList.map((item) => {
-          item.uid = item.uid || (Date.now() + this.tempIndex++)
-          item.status = item.status || 'success'
-          return item
-        })
-      }
-    }
-  },
-  beforeDestroy() {
-    this.revokeObject()
-  },
+  watch: {},
+  beforeDestroy() {},
   mounted() {},
   methods: {
-    handleStart(rawFile) {
-      rawFile.uid = Date.now() * 1 + this.tempIndex++
-      const file = {
-        status: 'ready',
-        name: rawFile.name,
-        size: rawFile.size,
-        percentage: 0,
-        uid: rawFile.uid,
-        raw: rawFile
-      }
-      if (this.listType === 'picture-card' || this.listType === 'picture') {
-        try {
-          file.url = URL.createObjectURL(rawFile)
-        } catch (err) {
-          console.error('上传错误', err)
-          return
-        }
-      }
-      this.uploadFiles.push(file)
-      this.onChange(file, this.uploadFiles)
-    },
-    onChange(file, fileList) {
-      // console.log(file, fileList, 'onChange', this.uploadFiles)
-    },
-    handleProgress(ev, rawFile) {
-      //console.log(ev, rawFile, '111--->>>handleProgress')
-      // const file = this.getFile(rawFile)
-      // file.status = 'uploading'
-      // file.percentage = ev.percent || 0
-      // console.log(file, 'file--->>>progress', ev, rawFile)
-    },
-    handleSuccess(res, rawFile) {
-      const file = this.getFile(rawFile)
-      // console.log(res, rawFile, 'success', , this.uploadFiles)
-      if (file) {
-        file.status = 'success'
-        file.response = res
-        // this.onSuccess(res, file, this.uploadFiles)
-        this.onChange(file, this.uploadFiles)
-      }
-    },
-    handleError(err, rawFile) {
-      const file = this.getFile(rawFile)
-      const fileList = this.uploadFiles
-      file.status = 'fail'
-      fileList.splice(fileList.indexOf(file), 1)
-      this.onChange(file, this.uploadFiles)
-      console.log(err, 'err')
-    },
-    handleRemove(file, raw) {
-      if (raw) {
-        file = this.getFile(raw)
-      }
-      const doRemove = () => {
-        this.abort(file)
-        const fileList = this.uploadFiles
-        fileList.splice(fileList.indexOf(file), 1)
-        this.onRemove(file, fileList)
-      }
-      if (!this.beforeRemove) {
-        doRemove()
-      } else if (typeof this.beforeRemove === 'function') {
-        const before = this.beforeRemove(file, this.uploadFiles)
-        if (before && before.then) {
-          before.then(() => {
-            doRemove()
-          }, () => {})
-        } else if (before !== false) {
-          doRemove()
-        }
-      }
-    },
-    getFile(rawFile) {
-      const fileList = this.uploadFiles
-      let target
-      fileList.every((item) => {
-        target = rawFile.uid === item.uid ? item : null
-        return !target
-      })
-      return target
-    },
-    abort(file) {
-      this.$refs['web-uploader'].abort(file)
-    },
-    // 释放url对象
-    revokeObject() {
-      this.uploadFiles.forEach((file) => {
-        if (file.url && file.url.indexOf('blob:') === 0) {
-          URL.revokeObjectURL(file.url)
-        }
-      })
-    },
-    clearFiles() {
+    init() {
+      this.fileList = []
       this.uploadFiles = []
+    },
+    beforeUpload(file) {
+      let errorType = true
+      const reg = /\\|\/|\?|\？|\*|\"|\“|\”|\'|\‘|\’|\<|\>|\{|\}|\[|\]|\【|\】|\：|\:|\、|\^|\$|\!|\~|\`|\|/g
+      const acceptType = this.accept.replace(reg, ',').split(',')
+      const filename = file.name.split('.')
+      const fileType = filename[filename.length - 1]
+      const isLtMax = file.size / 1024 / 1024 < this.singleSize
+      if (acceptType.indexOf(fileType.toLowerCase()) !== -1) {
+        errorType = false
+      }
+      if (errorType) {
+        this.$message.error(this.acceptText + this.accept + '格式!')
+      } else {
+        if (!isLtMax) {
+          this.$message.error(this.sizeText + this.singleSize + 'MB!')
+        }
+      }
+      return !errorType && isLtMax
+    },
+    handleProgress(event, file, fileList) {
+      this.getList()
+    },
+    handleSuccess(response, file, fileList) {
+      this.resultVisible = true
+      this.fileList = fileList
+      this.getList()
+    },
+    handleError(err, file, fileList) {
+      console.log(err, 'err', err, file, fileList)
+      this.getList()
+    },
+    getList() {
+      this.uploadFiles = this.$refs['web-uploader'].uploadFiles || []
+      console.log(this.uploadFiles, 'this.uploadFiles')
     }
   }
 }
@@ -178,6 +109,20 @@ export default {
       display: flex;
       align-items: center;
     }
+  }
+  .el-icon-upload {
+    font-size: 67px;
+    text-align: center;
+    margin: 40px 0 16px;
+    color: #9ea7b4;
+    font-weight: 400;
+    display: inline-block;
+    line-height: 50px;
+  }
+  .el-upload__text {
+    font-size: 14px;
+    text-align: center;
+    color: #55677d;
   }
 }
 </style>

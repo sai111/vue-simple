@@ -43,6 +43,7 @@ export default {
     progress: {
       deep: true,
       handler(val) {
+        console.log(val, 'al-----progress')
         if (val) this.$emit('on-progress', val)
       }
     }
@@ -73,9 +74,6 @@ export default {
         if (!isLtMax) {
           this.$message.error(this.acceptText)
         }
-      }
-      if (!errorType && isLtMax) {
-        this.$emit('on-progress', file)
       }
       return !errorType && isLtMax
     },
@@ -166,7 +164,7 @@ export default {
         onProgress: (e) => {
           const { percent } = e
           this.progress[rawFile.name] = percent
-          // console.log('🚀 ~ file: upload.vue ~ line 162 ~ post ~ e', e)
+           console.log(rawFile, '🚀 ~ file: upload.vue ~ line 162 ~ post ~ e', e)
         },
         onSuccess: (res) => {
           this.$emit('on-success', res, rawFile)

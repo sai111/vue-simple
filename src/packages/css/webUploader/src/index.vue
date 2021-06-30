@@ -33,7 +33,6 @@ export default {
     this.revokeObject()
   },
   mounted() {
-    console.log(this.props, 'props----8888')
     //this.initOption()
   },
   methods: {

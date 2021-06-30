@@ -73,11 +73,26 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    // 下载失败时提示信息处理
+    // bug-文件预览或下载中，axios设置responseType:blob时对于后台报错信息的捕获兼容_do
+    // 地址：https://blog.csdn.net/dongguan_123/article/details/100183284
+    if (error.response.config.responseType === 'blob') {
+      const render = new FileReader()
+      render.readAsText(error.response.data, 'utf-8')
+      render.onload = (e) => {
+        Message({
+          message: (JSON.parse(e.target.result)).message,
+          type: 'error',
+          duration: 5 * 1000
+        })
+      }
+    } else {
+      Message({
+        message: error.message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+    }
     return Promise.reject(error)
   }
 )
