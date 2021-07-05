@@ -1,19 +1,34 @@
 <script>
+import UploadList from './upload-list'
 import Upload from './upload'
+import ElProgress from 'element-ui/packages/progress'
+import Migrating from 'element-ui/src/mixins/migrating'
+
 function noop() {}
+
 export default {
-  name: 'WebUpload',
-  components: { Upload },
+  name: 'ElUpload',
+
+  mixins: [Migrating],
+
+  components: {
+    ElProgress,
+    UploadList,
+    Upload
+  },
+
   provide() {
     return {
       uploader: this
     }
   },
+
   inject: {
     elForm: {
       default: ''
     }
   },
+
   props: {
     action: {
       type: String,
@@ -21,63 +36,27 @@ export default {
     },
     headers: {
       type: Object,
-      default: () => {}
+      default() {
+        return {}
+      }
     },
-    data: {
-      type: Object,
-      default: () => {}
-    },
-    multiple: {
-      type: Boolean,
-      default: false
-    },
+    data: Object,
+    multiple: Boolean,
     name: {
       type: String,
       default: 'file'
     },
-    drag: {
-      type: Boolean,
-      default: false
-    },
-    dragger: {
-      type: Boolean,
-      default: false
-    },
-    withCredentials: {
-      type: Boolean,
-      default: false
-    },
+    drag: Boolean,
+    dragger: Boolean,
+    withCredentials: Boolean,
     showFileList: {
       type: Boolean,
       default: true
     },
-    accept: {
-      type: String,
-      default: ''
-    },
+    accept: String,
     type: {
       type: String,
       default: 'select'
-    },
-    // 单一文件大小：单位MB
-    singleSize: {
-      type: [Number, String],
-      default: Infinity
-    },
-    // 总体大小：单位MB
-    sumSize: {
-      type: [Number, String],
-      default: Infinity
-    },
-    // 上传格式提示
-    acceptText: {
-      type: String,
-      default: ''
-    },
-    // 上传大小提示
-    sizeText: {
-      type: String,
-      default: ''
     },
     beforeUpload: Function,
     beforeRemove: Function,
@@ -107,7 +86,7 @@ export default {
     fileList: {
       type: Array,
       default() {
-        return [];
+        return []
       }
     },
     autoUpload: {
@@ -126,6 +105,7 @@ export default {
       default: noop
     }
   },
+
   data() {
     return {
       uploadFiles: [],
@@ -134,11 +114,13 @@ export default {
       tempIndex: 1
     }
   },
+
   computed: {
     uploadDisabled() {
       return this.disabled || (this.elForm || {}).disabled
     }
   },
+
   watch: {
     listType(type) {
       if (type === 'picture-card' || type === 'picture') {
@@ -165,13 +147,7 @@ export default {
       }
     }
   },
-  beforeDestroy() {
-    this.uploadFiles.forEach(file => {
-      if (file.url && file.url.indexOf('blob:') === 0) {
-        URL.revokeObjectURL(file.url)
-      }
-    })
-  },
+
   methods: {
     handleStart(rawFile) {
       rawFile.uid = Date.now() + this.tempIndex++
@@ -183,6 +159,7 @@ export default {
         uid: rawFile.uid,
         raw: rawFile
       }
+
       if (this.listType === 'picture-card' || this.listType === 'picture') {
         try {
           file.url = URL.createObjectURL(rawFile)
@@ -191,6 +168,7 @@ export default {
           return
         }
       }
+
       this.uploadFiles.push(file)
       this.onChange(file, this.uploadFiles)
     },
@@ -202,9 +180,11 @@ export default {
     },
     handleSuccess(res, rawFile) {
       const file = this.getFile(rawFile)
+
       if (file) {
         file.status = 'success'
         file.response = res
+
         this.onSuccess(res, file, this.uploadFiles)
         this.onChange(file, this.uploadFiles)
       }
@@ -212,8 +192,11 @@ export default {
     handleError(err, rawFile) {
       const file = this.getFile(rawFile)
       const fileList = this.uploadFiles
+
       file.status = 'fail'
+
       fileList.splice(fileList.indexOf(file), 1)
+
       this.onError(err, file, this.uploadFiles)
       this.onChange(file, this.uploadFiles)
     },
@@ -223,10 +206,11 @@ export default {
       }
       let doRemove = () => {
         this.abort(file)
-        const fileList = this.uploadFiles
+        let fileList = this.uploadFiles
         fileList.splice(fileList.indexOf(file), 1)
         this.onRemove(file, fileList)
       }
+
       if (!this.beforeRemove) {
         doRemove()
       } else if (typeof this.beforeRemove === 'function') {
@@ -241,7 +225,7 @@ export default {
       }
     },
     getFile(rawFile) {
-      const fileList = this.uploadFiles
+      let fileList = this.uploadFiles
       let target
       fileList.every(item => {
         target = rawFile.uid === item.uid ? item : null
@@ -272,7 +256,39 @@ export default {
       }
     }
   },
+
+  beforeDestroy() {
+    this.uploadFiles.forEach(file => {
+      if (file.url && file.url.indexOf('blob:') === 0) {
+        URL.revokeObjectURL(file.url)
+      }
+    })
+  },
+
   render(h) {
+    let uploadList
+
+    if (this.showFileList) {
+      uploadList = (
+        <UploadList
+          disabled={this.uploadDisabled}
+          listType={this.listType}
+          files={this.uploadFiles}
+          on-remove={this.handleRemove}
+          handlePreview={this.onPreview}>
+          {
+            (props) => {
+              if (this.$scopedSlots.file) {
+                return this.$scopedSlots.file({
+                  file: props.file
+                })
+              }
+            }
+          }
+        </UploadList>
+      )
+    }
+
     const uploadData = {
       props: {
         type: this.type,
@@ -301,12 +317,20 @@ export default {
       },
       ref: 'upload-inner'
     }
+
     const trigger = this.$slots.trigger || this.$slots.default
     const uploadComponent = <upload {...uploadData}>{trigger}</upload>
+
     return (
       <div>
-        { this.$slots.trigger ? [uploadComponent, this.$slots.default] : uploadComponent }
-        { this.$slots.tip }
+        { this.listType === 'picture-card' ? uploadList : ''}
+        {
+          this.$slots.trigger
+            ? [uploadComponent, this.$slots.default]
+            : uploadComponent
+        }
+        {this.$slots.tip}
+        { this.listType !== 'picture-card' ? uploadList : ''}
       </div>
     )
   }

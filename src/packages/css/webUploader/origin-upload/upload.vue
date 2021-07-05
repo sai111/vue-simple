@@ -1,6 +1,7 @@
 <script>
 import ajax from './ajax'
 import UploadDragger from './upload-dragger.vue'
+
 export default {
   inject: ['uploader'],
   components: {
@@ -46,19 +47,22 @@ export default {
     limit: Number,
     onExceed: Function
   },
+
   data() {
     return {
       mouseover: false,
       reqs: {}
     }
   },
+
   methods: {
     isImage(str) {
       return str.indexOf('image') !== -1
     },
     handleChange(ev) {
       const files = ev.target.files
-      if (!files) return;
+
+      if (!files) return
       this.uploadFiles(files)
     },
     uploadFiles(files) {
@@ -66,9 +70,12 @@ export default {
         this.onExceed && this.onExceed(files, this.fileList)
         return
       }
+
       let postFiles = Array.prototype.slice.call(files)
       if (!this.multiple) { postFiles = postFiles.slice(0, 1) }
+
       if (postFiles.length === 0) { return }
+
       postFiles.forEach(rawFile => {
         this.onStart(rawFile)
         if (this.autoUpload) this.upload(rawFile)
@@ -76,9 +83,11 @@ export default {
     },
     upload(rawFile) {
       this.$refs.input.value = null
+
       if (!this.beforeUpload) {
         return this.post(rawFile)
       }
+
       const before = this.beforeUpload(rawFile)
       if (before && before.then) {
         before.then(processedFile => {
@@ -111,7 +120,7 @@ export default {
     abort(file) {
       const { reqs } = this
       if (file) {
-        let uid = file;
+        let uid = file
         if (file.uid) uid = file.uid
         if (reqs[uid]) {
           reqs[uid].abort()
@@ -143,7 +152,7 @@ export default {
           this.onError(err, rawFile)
           delete this.reqs[uid]
         }
-      };
+      }
       const req = this.httpRequest(options)
       this.reqs[uid] = req
       if (req && req.then) {
@@ -163,6 +172,7 @@ export default {
       }
     }
   },
+
   render(h) {
     let {
       handleClick,

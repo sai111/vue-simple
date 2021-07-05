@@ -75,7 +75,7 @@
     data() {
       return {
         focusing: false
-      };
+      }
     },
     components: { ElProgress },
 
@@ -83,7 +83,7 @@
       files: {
         type: Array,
         default() {
-          return [];
+          return []
         }
       },
       disabled: {
@@ -95,11 +95,11 @@
     },
     methods: {
       parsePercentage(val) {
-        return parseInt(val, 10);
+        return parseInt(val, 10)
       },
       handleClick(file) {
-        this.handlePreview && this.handlePreview(file);
+        this.handlePreview && this.handlePreview(file)
       }
     }
-  };
+  }
 </script>

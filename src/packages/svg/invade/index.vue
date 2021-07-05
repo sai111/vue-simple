@@ -5,39 +5,55 @@
       :key="'invade-li-' + index"
       class="invade-li"
     >
-      <circle-shape v-if="item.type<1" />
-      <pentagon-shape v-if="item.type>0" />
+      <components
+        :is="item.component"
+        :width="item.width"
+        :height="item.height"
+        :color="item.color"
+        :color-arr="item.colorArr"
+        :path="item.path"
+        :path2="item.path2"
+      />
     </div>
   </div>
 </template>
 <script>
-import CircleShape from './component/circle.vue'
-import PentagonShape from './component/pentagon.vue'
+import config from './config.js'
 export default {
   name: 'Invade',
-  components: { CircleShape, PentagonShape },
+  components: config.comps,
   props: {},
   data() {
     return {
       sideNum: 5,
       fiveRad: Math.PI * 2 / 5,
-      dataList: [
-        { label: '入侵', value: Math.random() * 10000, type: 0 },
-        { label: '捕获', value: Math.random() * 10000, type: 1 }
-      ]
+      dataList: config.list
     }
   },
   computed: {},
   watch: {},
   mounted() {},
-  methods: {}
+  methods: {
+    formatStyle(item) {
+      let result = {
+        width: '250px',
+        height: '250px'
+      }
+      if (item.width) {
+        result.width = item.width
+      }
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
+// fill: nth(#F5F5F5 #FFCD00 #FF8356 #F54D42 #FF5C5C, $m);
 .invade {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-wrap: wrap;
+  background:#061c33;
   .invade-li {
     width: 250px;
     height: 250px;

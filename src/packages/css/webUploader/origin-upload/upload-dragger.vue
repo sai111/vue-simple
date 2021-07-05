@@ -1,7 +1,9 @@
 <template>
   <div
-    class="web-uploader-dragger"
-    :class="{'is-dragover': dragover}"
+    class="el-upload-dragger"
+    :class="{
+      'is-dragover': dragover
+    }"
     @drop.prevent="onDrop"
     @dragover.prevent="onDragover"
     @dragleave.prevent="dragover = false"
@@ -11,7 +13,7 @@
 </template>
 <script>
   export default {
-    name: 'UploadDragger',
+    name: 'ElUploadDrag',
     props: {
       disabled: Boolean
     },
@@ -50,7 +52,7 @@
             .filter(type => type)
             .some(acceptedType => {
               if (/\..+$/.test(acceptedType)) {
-                return extension === acceptedType;
+                return extension === acceptedType
               }
               if (/\/\*$/.test(acceptedType)) {
                 return baseType === acceptedType.replace(/\/\*$/, '')
@@ -65,17 +67,4 @@
     }
   }
 </script>
-<style scoped lang="scss">
-.web-uploader-dragger {
-  background-color: #fff;
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  box-sizing: border-box;
-  width: 360px;
-  height: 180px;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-</style>
+

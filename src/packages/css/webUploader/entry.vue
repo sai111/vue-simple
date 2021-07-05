@@ -5,10 +5,12 @@
       ref="web-uploader"
       drag
       multiple
+      :auto-upload="false"
       :action="action"
       :limit="maxLimit"
       :accept="accept"
       :before-upload="beforeUpload"
+      :on-change="getList"
       :on-success="handleSuccess"
       :on-progress="handleProgress"
     >
@@ -20,7 +22,6 @@
         上传文件是{{ accept }}格式! 大小{{ singleSize }}MB!
       </div>
     </el-upload>
-    <common-tab />
     <!-- 弹窗 -->
     <result-popover
       v-if="resultVisible"
@@ -30,11 +31,10 @@
   </div>
 </template>
 <script>
-import CommonTab from './tab.vue'
 import ResultPopover from './result-popover.vue'
 export default {
   name: 'WebUploaderEntry',
-  components: { ResultPopover, CommonTab },
+  components: { ResultPopover },
   data() {
     return {
       multiple: true,
@@ -44,12 +44,12 @@ export default {
       maxLimit: 100, // 个数最大100
       singleSize: 100, // 100M
       sumSize: 100 * 1024,
-      uploadFiles: [],
       fileList: [],
       errList: [],
       action: 'http://116.62.114.170:3000/file/upload',
       tempIndex: 1,
-      resultVisible: true
+      resultVisible: true,
+      uploadFiles: []
     }
   },
   computed: {},
@@ -94,7 +94,6 @@ export default {
     },
     getList() {
       this.uploadFiles = this.$refs['web-uploader'].uploadFiles || []
-      console.log(this.uploadFiles, 'this.uploadFiles')
     }
   }
 }

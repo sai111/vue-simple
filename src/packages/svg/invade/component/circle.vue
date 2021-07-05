@@ -5,7 +5,8 @@
       y="0"
       width="100%"
       height="100%"
-      c="0 0 250 250"
+      preserveAspectRetio="xMidYMid meet"
+      viewBox="0 0 250 250"
     >
       <g>
         <circle cx="125" cy="125" r="100" class="invade-circle" />
