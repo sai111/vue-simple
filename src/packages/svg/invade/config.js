@@ -7,6 +7,7 @@ import RectScaleBlock from './component/rect-scale.vue'
 import LinearLoading from './component/linear-loading.vue'
 
 import LoadingBlock from './component/loading.vue'
+import DoubanLoading from './component/douban-loading.vue'
 // 色值
 const colorArr1 = [
   '#8A6BD6',
@@ -29,7 +30,8 @@ const comps = {
   FlowerScaleBlock,
   RectScaleBlock,
   LinearLoading,
-  LoadingBlock
+  LoadingBlock,
+  DoubanLoading
 }
 
 const list = [
@@ -102,6 +104,16 @@ const list = [
     width: 200,
     height: 200,
     colorArr: colorArr1
+  },
+  {
+    label: 'loading',
+    type: 'douban-loading',
+    component: 'DoubanLoading',
+    width: 400,
+    height: 400,
+    color: '#00B51D',
+    radius: 100,
+    show: true
   }
 ]
 

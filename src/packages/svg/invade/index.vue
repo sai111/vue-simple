@@ -6,6 +6,7 @@
       class="invade-li"
     >
       <components
+        v-if="item.show"
         :is="item.component"
         :width="item.width"
         :height="item.height"
@@ -13,6 +14,7 @@
         :color-arr="item.colorArr"
         :path="item.path"
         :path2="item.path2"
+        :radius="item.radius"
       />
     </div>
   </div>
@@ -25,25 +27,13 @@ export default {
   props: {},
   data() {
     return {
-      sideNum: 5,
-      fiveRad: Math.PI * 2 / 5,
       dataList: config.list
     }
   },
   computed: {},
   watch: {},
   mounted() {},
-  methods: {
-    formatStyle(item) {
-      let result = {
-        width: '250px',
-        height: '250px'
-      }
-      if (item.width) {
-        result.width = item.width
-      }
-    }
-  }
+  methods: {}
 }
 </script>
 <style lang="scss" scoped>
@@ -59,6 +49,7 @@ export default {
     height: 250px;
     overflow: hidden;
     position: relative;
+    border: 1px solid red;
   }
 }
 </style>

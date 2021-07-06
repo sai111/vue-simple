@@ -28,7 +28,7 @@ const findscrollEl = (el) => {
 }
 
 export default {
-  name: 'BackTop',
+  name: 'BackTop', // 置顶
   props: {
     visibilityHeight: {
       type: Number,

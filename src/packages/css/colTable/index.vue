@@ -14,7 +14,7 @@
 </template>
 <script>
 export default {
-  name: 'ColTable',
+  name: 'ColTable', // 表格合并
   props: {},
   data() {
     return {
