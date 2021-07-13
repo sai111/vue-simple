@@ -1,7 +1,7 @@
 <template>
   <div class="webUploader-entry">
     webUploader组件
-    <el-upload
+    <!--<el-upload
       ref="web-uploader"
       drag
       multiple
@@ -21,7 +21,9 @@
       <div slot="tip" class="el-upload__tip">
         上传文件是{{ accept }}格式! 大小{{ singleSize }}MB!
       </div>
-    </el-upload>
+    </el-upload>-->
+    <!-- 原生上传 -->
+    <original-upload />
     <!-- 弹窗 -->
     <result-popover
       v-if="resultVisible"
@@ -32,9 +34,10 @@
 </template>
 <script>
 import ResultPopover from './result-popover.vue'
+import OriginalUpload from './original/upload.vue'
 export default {
   name: 'WebUploaderEntry',
-  components: { ResultPopover },
+  components: { ResultPopover, OriginalUpload },
   data() {
     return {
       multiple: true,
@@ -48,7 +51,7 @@ export default {
       errList: [],
       action: 'http://116.62.114.170:3000/file/upload',
       tempIndex: 1,
-      resultVisible: true,
+      resultVisible: false,
       uploadFiles: []
     }
   },

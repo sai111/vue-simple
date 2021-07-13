@@ -10,7 +10,7 @@
         <path :d="path" />
         <!--此处为AI导出的单片花瓣的路径-->
       </symbol>
-      <g id="leaf" :fill="color" transform="scale(1.6)">
+      <g id="leaf" :fill="color" :transform="`translate(-${width / 3}, -${height / 4}) scale(1.8)`">
         <use xlink:href="#single" />
         <use
           v-for="(item, index) in 17"

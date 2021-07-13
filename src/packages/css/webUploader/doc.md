@@ -499,6 +499,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL
 https://www.cnblogs.com/chengpanpan/p/7074794.html
 https://www.oecom.cn/jsuploadprogress/
 https://juejin.cn/post/6844903968338870285
+https://www.cnblogs.com/sanhuamao/p/14068101.html
 
 ## 原生接口请求
 

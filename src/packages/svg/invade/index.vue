@@ -6,7 +6,6 @@
       class="invade-li"
     >
       <components
-        v-if="item.show"
         :is="item.component"
         :width="item.width"
         :height="item.height"
