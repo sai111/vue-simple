@@ -130,7 +130,6 @@ export default {
       padding: 10px;
       box-sizing: border-box;
       vertical-align: middle;
-      background-color: #fff;
       border-radius: 4px;
       border: 1px solid #ebeef5;
       font-size: 18px;
@@ -148,11 +147,6 @@ export default {
         .el-icon-right,
         .el-icon-delete {
           cursor: pointer;
-        }
-      }
-      &:hover {
-        .piece-btn {
-          opacity: 1;
         }
       }
       .piece-content-add {
@@ -179,21 +173,48 @@ export default {
       }
       &:hover {
         box-shadow: 0px 4px 5px 0 rgba(0,0,0,.4);
+        .piece-btn {
+          opacity: 1;
+        }
         .piece-content-title {
-          animation: fadeInDownBig 0.6s ease;
-          opacity: 0;
-          transform: translate3d(0, -2000px, 0);
-          animation-fill-mode: forwards;
+          animation: fadeInDown 2s ease-out 0.5s 1 both
+          // animation: fadeInDownBig 0.25s ease 0.25s;
+          //transform: translate3d(0, -2000px, 0);
+          //animation-fill-mode: forwards;
         }
         .piece-content-des {
-          animation: fadeInUpBig 0.6s ease;
-          opacity: 0;
-          -webkit-transform: translate3d(0, 2000px, 0);
-          transform: translate3d(0, 2000px, 0);
-          animation-fill-mode: forwards;
+          animation: fadeInUpBig 2s ease-out 0.5s 1 both
+          // animation: fadeInUpBig 0.25s ease 0.25s;
+          //-webkit-transform: translate3d(0, 2000px, 0);
+          //transform: translate3d(0, 2000px, 0);
+          //animation-fill-mode: forwards;
         }
       }
     }
+  }
+}
+@keyframes fadeInDownBig {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -2000px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fadeInUpBig {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 2000px, 0);
+    transform: translate3d(0, 2000px, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
 }
 </style>

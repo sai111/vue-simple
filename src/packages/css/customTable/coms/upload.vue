@@ -51,6 +51,7 @@ export default {
             type: 'binary'
           })
           const exlname = workbook.SheetNames[0] // 取第一张表
+          // xlsx.js 工具类 - `XLSX.utils.sheet_to_json`：输出JSON格式
           const exl = XLSX.utils.sheet_to_json(workbook.Sheets[exlname]) // 生成json表格内容
           let tmp = []
           for (const k in this.excelNames) {

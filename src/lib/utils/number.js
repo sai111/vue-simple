@@ -15,7 +15,14 @@ const translateNum = function(num) {
     }
   }
 }
-
+// 数组对象解构
+//const arr = [
+//  { content: 111 },
+//  { list: [a, b, c] }
+//]
+//let result = Object.create({})
+//arr.forEach((v) => result = { ...result, ...v })
+//console.log(result, 'result')
 export default {
   translateNum
 }

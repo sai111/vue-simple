@@ -11,3 +11,17 @@ https://zhuanlan.zhihu.com/p/267683616
 3. 下载saveAs
   responseType
   地址：https://blog.csdn.net/dongguan_123/article/details/100183284
+
+
+ 亚伦 · 斯沃茨
+ 互联网之子
+
+
+
+地址：
+https://dribbble.com/
+
+
+
+团队规范
+http://alloyteam.github.io/CodeGuide/
